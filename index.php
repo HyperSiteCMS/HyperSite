@@ -1,8 +1,5 @@
 <?php
+require 'includes/classes/class.template.php';
+require 'includes/classes/class.dbal.php';
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+$template = new template('./templates/elegant_black/','elegant_black',true);
