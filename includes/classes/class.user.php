@@ -1,3 +1,4 @@
+<?php
 /*
  * Class.User.PHP
  * User management class
