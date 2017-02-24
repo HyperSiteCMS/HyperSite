@@ -1,4 +1,0 @@
-<?php
-/*
- * ShoutBox Module
- */
