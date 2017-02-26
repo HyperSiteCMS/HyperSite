@@ -1,7 +1,15 @@
 </div>
 <div id="footer">
-                <p>&copy; {SITE_TITLE} {SITE_YEAR}</p>
-                <p>Template &copy; Ryan Morrison</p>
+    <p><!-- IF ALLOW_USER_LOGIN -->
+          <!-- IF USER_LOGGED_IN -->
+          <a href="./user.php?mode=logout">Logout</a>
+          <!-- ELSE -->
+          <a href="./user.php?mode=login">Login</a> | <a href="./user.php?mode=register">Register</a>
+          <!-- ENDIF -->
+          <br />
+          <!-- ENDIF -->
+                {CREDIT_LINE}
+                    <br/>Template &copy; Ryan Morrison</p>
             </div>
         </div>
     </body>

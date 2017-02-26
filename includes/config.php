@@ -8,9 +8,10 @@ class config
     var $mysql_port = '3306';
     var $mysql_user = 'root';
     var $mysql_pass = '';
-    var $mysql_db = 'hypersite';
+    var $mysql_db = 'site';
     var $table_prefix = 'hs_';
     
     var $template_dir = 'styles';
+    var $config = array();
 }
 
