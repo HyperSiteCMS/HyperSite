@@ -10,6 +10,23 @@ if (file_exists("{$mode}.{$phpex}"))
 }
 else
 {
+    $template->assign_var('INTRO_TEXT', $config->config['site_intro']);
+    if (file_exists($config->template_dir . '/' . $config->config['site_theme'] . '/template/' . $mode . '.html'))
+    {
+        $template_file = "{$mode}.html";
+    }
+    else
+    {
+        $template_file = "viewpage.html";
+    }
+    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='home'";
+    $result = $db->query($query);
+    $page = $db->fetchrow($result);
+    $template->assign_vars(array(
+         'PAGE_TITLE' => $page['page_title'],
+         'PAGE_TEXT' => $page['page_text']
+    ));
+    /*
     switch ($mode)
     {
         case 'home':
@@ -36,6 +53,7 @@ else
             ));
         break;
     }
+    */
 }
 $template->set_filenames(array(
     'body' => $template_file
