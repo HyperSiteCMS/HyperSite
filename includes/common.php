@@ -25,13 +25,13 @@ foreach ($ar as $key => $val)
 {
     $config->config[$val['setting_name']] = $val['setting_value'];
 }
-
+$config->config['site_theme'] = str_replace(' ','_',$config->config['site_theme']);
 $script_name = explode('.', basename(str_replace(array('\\', '//'), '/', $_SERVER['PHP_SELF'])));
 
 //Load classes
 
 
-$template = new template($config->template_dir . '/elegant_black/template/','default');
+$template = new template($config->template_dir . '/' . $config->config['site_theme'] . '/template/','default');
 $mode = request_var('mode', 'home');
 $i = request_var('i', null);
 //This will be overridden in index.php as only 2 files are used for displaying pages. This part is mainly for modules which have different template files.
@@ -44,3 +44,15 @@ $template->assign_vars(array(
    'CREDIT_LINE' => "Powered by <a href=\"http://www.hypersite.info\">HyperSite v1.0 &copy;</a>",
    'ALLOW_USER_LOGIN' => $config->config['allow_users'],
 ));
+
+//Load Navigation Bar
+$query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent=0";
+$result = $db->query($query);
+$ar = $db->fetchall($result);
+foreach ($ar as $navitem)
+{
+    $template->assign_block_vars('nav', array(
+        'URL' => $navitem['page_identifier'],
+        'TITLE' => $navitem['page_title']
+    ));
+}
