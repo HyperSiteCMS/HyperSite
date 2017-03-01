@@ -43,6 +43,8 @@ $template->assign_vars(array(
    'SITE_DESCRIPTION' => $config->config['site_desc'],
    'CREDIT_LINE' => "Powered by <a href=\"http://www.hypersite.info\">HyperSite v1.0 &copy;</a>",
    'ALLOW_USER_LOGIN' => $config->config['allow_users'],
+   'SITE_THEME' => $config->config['site_theme'],
+   'SERVER_NAME' => $_SERVER['SERVER_NAME']
 ));
 
 //Load Navigation Bar
