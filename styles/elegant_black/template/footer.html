@@ -2,12 +2,16 @@
 <div id="footer">
     <p><!-- IF ALLOW_USER_LOGIN -->
           <!-- IF USER_LOGGED_IN -->
-          <a href="./user.php?mode=logout">Logout</a>
+          <a href="./user/logout/">Logout</a>
           <!-- ELSE -->
-          <a href="./user.php?mode=login">Login</a> | <a href="./user.php?mode=register">Register</a>
+          <a href="./user/login/">Login</a> | <a href="./user/register/">Register</a>
           <!-- ENDIF -->
           <br />
+          <!-- ELSE -->
+          <a href="./user/login/">Login</a> (Admin Only)
+          <br />
           <!-- ENDIF -->
+          
                 {CREDIT_LINE}
                     <br/>Template &copy; Ryan Morrison</p>
             </div>

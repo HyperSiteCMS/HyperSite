@@ -33,9 +33,10 @@ $script_name = explode('.', basename(str_replace(array('\\', '//'), '/', $_SERVE
 
 $template = new template($config->template_dir . '/' . $config->config['site_theme'] . '/template/','default');
 $mode = request_var('mode', 'home');
+$act = request_var('act', null);
 $i = request_var('i', null);
 //This will be overridden in index.php as only 2 files are used for displaying pages. This part is mainly for modules which have different template files.
-$template_file = $script_name[0] . '/' . (($mode != 'home') ? $mode : 'index') . (($i) ? '_' . $i : '') . '.html';
+$template_file = (($mode != 'home') ? $mode : 'index') . (($i) ? '_' . $i : '') . '.html';
 
 //Load some sitewide variables into the template :)
 $template->assign_vars(array(
