@@ -12,7 +12,6 @@ require("{$root_path}includes/functions.{$phpex}");
 require("{$root_path}includes/classes/class.dbal.{$phpex}");
 require("{$root_path}includes/classes/class.template.{$phpex}");
 require("{$root_path}includes/classes/class.user.{$phpex}");
-require("{$root_path}includes/classes/class.website.{$phpex}");
 require("{$root_path}includes/constants.{$phpex}");
 
 //Open database connection
@@ -29,7 +28,7 @@ $config->config['site_theme'] = str_replace(' ','_',$config->config['site_theme'
 $script_name = explode('.', basename(str_replace(array('\\', '//'), '/', $_SERVER['PHP_SELF'])));
 
 //Load classes
-
+$user = new user();
 
 $template = new template($config->template_dir . '/' . $config->config['site_theme'] . '/template/','default');
 $mode = request_var('mode', 'home');
