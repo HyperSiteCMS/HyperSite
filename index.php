@@ -19,41 +19,13 @@ else
     {
         $template_file = "viewpage.html";
     }
-    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='home'";
+    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$mode}'";
     $result = $db->query($query);
     $page = $db->fetchrow($result);
     $template->assign_vars(array(
          'PAGE_TITLE' => $page['page_title'],
          'PAGE_TEXT' => $page['page_text']
     ));
-    /*
-    switch ($mode)
-    {
-        case 'home':
-            //Manually override the template file variable
-            $template_file = "index.html";
-            $template->assign_var('INTRO_TEXT', $config->config['site_intro']);
-            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='home'";
-            $result = $db->query($query);
-            $page = $db->fetchrow($result);
-            $template->assign_vars(array(
-               'PAGE_TITLE' => $page['page_title'],
-                'PAGE_TEXT' => $page['page_text']
-            ));
-        break;
-        default:
-            //Manually set template file
-            $template_file = "viewpage.html";
-            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$mode}'";
-            $result = $db->query($query);
-            $page = $db->fetchrow($result);
-            $template->assign_vars(array(
-               'PAGE_TITLE' => $page['page_title'],
-                'PAGE_TEXT' => $page['page_text']
-            ));
-        break;
-    }
-    */
 }
 $template->set_filenames(array(
     'body' => $template_file
