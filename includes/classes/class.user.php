@@ -17,7 +17,8 @@ class user
             'username' => '',
             'user_email' => '',
             'logged_in' => false,
-            'date_registered' => 0
+            'date_registered' => 0,
+            'permissions' => array()
         );
     }
     function get_user($method, $value)

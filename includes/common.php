@@ -29,7 +29,26 @@ $script_name = explode('.', basename(str_replace(array('\\', '//'), '/', $_SERVE
 
 //Load classes
 $user = new user();
-
+//Lets check if current user is logged in
+if (isset($_COOKIE['hs_user_sess']))
+{
+    $session = $_COOKIE['hs_user_sess'];
+    $userinfo = $user->get_user('session', $session);
+    if ($userinfo)
+    {
+        //Valid session so lets renew cookie and get info from database
+        setcookie('hs_user_sess', $session, 60*60*24*30);
+        $permissions = $user->get_permissions($userinfo['user_id']);
+        $userinfo['permissions'] = $permissions;
+        $userinfo['logged_in'] = true;
+        $user->user_info = $userinfo;
+    }
+    else
+    {
+        //Not valid session so lets remove cookie
+        setcookie('hs_user_sess', '', time() - 3600);
+    }
+}
 $template = new template($config->template_dir . '/' . $config->config['site_theme'] . '/template/','default');
 $mode = request_var('mode', 'home');
 //Override mode if mode=index to stop a continuous loop
@@ -44,7 +63,10 @@ $template->assign_vars(array(
    'CREDIT_LINE' => "Powered by <a href=\"http://www.hypersite.info\">HyperSite v1.0 &copy;</a>",
    'ALLOW_USER_LOGIN' => $config->config['allow_users'],
    'SITE_THEME' => $config->config['site_theme'],
-   'SERVER_NAME' => $_SERVER['SERVER_NAME']
+   'SERVER_NAME' => $_SERVER['SERVER_NAME'],
+   'USER_LOGGED_IN' => $user->user_info['logged_in'],
+   'USER_IS_ADMIN' => $user->user_info['permissions']['is_admin']
+       
 ));
 
 //Load Navigation Bar
