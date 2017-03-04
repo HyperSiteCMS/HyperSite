@@ -79,4 +79,39 @@ class user
         $hash_pass = sha1($newpass);
         return $hash_pass;
     }
+    function user_login($username, $password)
+    {
+        global $config;
+        $key_len = floor(strlen($username)/2);
+        $key1 = substr($username, 0, $key_len);
+        $key2 = substr($username, $key_len);
+        $salt_len = floor(strlen($config->config['password_salt'])/2);
+        $salt1 = substr($config->config['password_salt'], 0 , $salt_len);
+        $salt2 = substr($config->config['password_salt'], $salt_len);
+        $newpass = $key1.$salt2.$password.$salt1.$key2;
+        $query = "SELECT * FROM " . USERS_TABLE . " WHERE username='{$username}' AND password='{$newpass}'";
+        $result = $db->query($query);
+        return $db->fetchrow($result);
+    }
+    function user_logout($session)
+    {
+        global $db;
+        $query = $db->build_query('delete',SESSION_TABLE,false,array('uniq_id' => $session));
+        return $db->query($result);
+    }
+    function create_user($user_array)
+    {
+        global $config, $db;
+        $key_len = floor(strlen($user_array['username'])/2);
+        $key1 = substr($user_array['username'], 0, $key_len);
+        $key2 = substr($user_array['username'], $key_len);
+        $salt_len = floor(strlen($config->config['password_salt'])/2);
+        $salt1 = substr($config->config['password_salt'], 0 , $salt_len);
+        $salt2 = substr($config->config['password_salt'], $salt_len);
+        $newpass = $key1.$salt2.$user_array['password'].$salt1.$key2;
+        $user_array['password'] = $newpass;
+        $query = $db->build_query('insert', USERS_TABLE, $user_array);
+        $result = $db->query($query);
+        return $result;
+    }
 }
