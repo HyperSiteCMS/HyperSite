@@ -4,10 +4,17 @@ $phpex = "php";
 $root_path = "./";
 require("{$root_path}includes/common.{$phpex}");
 
-if (file_exists("{$mode}.{$phpex}"))
+//check if file exists in root directory for main modules
+if (file_exists("{$root_path}{$mode}.{$phpex}"))
 {
-    include $mode . '.' . $phpex;
+    include "{$root_path}{$mode}.{$phpex}";
 }
+//Now check if file exists in the modules directory
+else if (file_exists("{$root_path}modules/{$mode}.{$phpex}"))
+{
+    include "{$root_path}modules/{$mode}.{$phpex}";
+}
+//Otherwise load from database.
 else
 {
     $template->assign_var('INTRO_TEXT', $config->config['site_intro']);
