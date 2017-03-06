@@ -9,7 +9,7 @@ else
 {
     if (isset($module))
     {
-        include "{$root_path}/modules/admin_{$module}.{$phpex}";
+        include "{$root_path}/modules/{$module}/admin_{$module}.{$phpex}";
     }
     else
     {
