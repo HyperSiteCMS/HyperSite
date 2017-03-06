@@ -18,7 +18,12 @@ class user
             'user_email' => '',
             'logged_in' => false,
             'date_registered' => 0,
-            'permissions' => array()
+            'permissions' => array(
+                'is_admin' => 0,
+                'can_mod_pages' => 0,
+                'can_load_mod' => 0,
+                'can_edit_users' => 0
+            )
         );
     }
     function get_user($method, $value)

@@ -31,7 +31,7 @@ else
     $page = $db->fetchrow($result);
     $template->assign_vars(array(
          'PAGE_TITLE' => $page['page_title'],
-         'PAGE_TEXT' => $page['page_text']
+         'PAGE_TEXT' => html_entity_decode($page['page_text'])
     ));
 }
 $template->set_filenames(array(

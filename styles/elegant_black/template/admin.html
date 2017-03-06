@@ -1,6 +1,20 @@
 <!-- INCLUDE header.html -->
 <div class="block">
     <h1>{PAGE_TITLE}</h1>
-    <p>Welcome to the Administrator Control Panel. Here you can modify your website by using the links on the left.</p>
+    <p>Welcome to the Administrator Control Panel. Here you can modify your website by using the links on the left. Below is a list of pages on your site.</p>
+</div>
+<div class="block">
+    <h1>All Pages</h1>
+    <table width="100%" cellspacing="1" cellpadding="1">
+        <tr><th>Page Title</th><th>Page Identifier</th><th>Edit</th><th>Delete</th></tr>
+        <!-- BEGIN pages -->
+        <tr>
+            <td>{pages.TITLE}</td>
+            <td>{pages.IDENTIFIER}</td>
+            <td><a href="./admin/editpage/{pages.ID}/">Edit</a></td>
+            <td><!-- IF pages.ID > 1 --><a href="./admin/deletepage/{pages.ID}/">Delete</a><!-- ENDIF --></td>
+        </tr>
+        <!-- END pages -->
+    </table>
 </div>
 <!-- INCLUDE footer.html -->

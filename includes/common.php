@@ -60,6 +60,7 @@ $i = request_var('i', null);
 $template->assign_vars(array(
    'SITE_TITLE' => $config->config['site_title'],
    'SITE_DESCRIPTION' => $config->config['site_desc'],
+   'TINY_MCE_API' => $config->config['tiny_mce_api'],
    'CREDIT_LINE' => "Powered by <a href=\"http://www.hypersite.info\">HyperSite v1.0 &copy;</a>",
    'ALLOW_USER_LOGIN' => $config->config['allow_users'],
    'SITE_THEME' => $config->config['site_theme'],

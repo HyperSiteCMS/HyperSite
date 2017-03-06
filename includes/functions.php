@@ -32,3 +32,31 @@ function unique_id()
 	$val = md5($val);
 	return substr($val, 4, 16);
 }
+function generate_parent_select($current_parent = 0)
+    {
+        global $db;
+        $return_text = "<select name=\"parent\">";
+        $sql = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent=0 ORDER BY page_title ASC";
+        $result = $db->query($sql);
+        if ($current_parent == 0) 
+        {
+            $return_text .= "<option value=\"0\" selected=\"selected\">Root</option>";
+        }
+        else
+        {
+            $return_text .= "<option value=\"0\">Root</option>";
+        }
+        while ($row = $db->fetchrow($result))
+        {
+            if ($current_parent == $row['page_id'])
+            {
+                $return_text .= "<option value=\"{$row['page_id']}\" selected=\"selected\">{$row['page_title']}</option>";
+            }
+            else
+            {
+                $return_text .= "<option value=\"{$row['page_id']}\">{$row['page_title']}</option>";
+            }
+        }
+        $return_text .= "</select>";
+        return $return_text;
+    }
