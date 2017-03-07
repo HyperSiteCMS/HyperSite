@@ -12,6 +12,7 @@ if (file_exists("{$root_path}{$mode}.{$phpex}"))
 //Now check if file exists in the modules directory
 else if (file_exists("{$root_path}modules/{$mode}/{$mode}.{$phpex}"))
 {
+    $template_file = "../../../";
     include "{$root_path}modules/{$mode}/{$mode}.{$phpex}";
 }
 //Otherwise load from database.
