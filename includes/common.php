@@ -32,8 +32,7 @@ $user = new user();
 //Lets check if current user is logged in
 if (isset($_COOKIE['hs_user_sess']))
 {
-    die('Cookie exists');
-    $session = $_COOKIE['hs_user_sess'];
+    $session = $db->clean($_COOKIE['hs_user_sess']);
     $userinfo = $user->get_user('session', $session);
     if ($userinfo)
     {
