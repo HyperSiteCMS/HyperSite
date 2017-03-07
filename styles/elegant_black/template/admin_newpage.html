@@ -1,0 +1,24 @@
+<!-- INCLUDE header.html -->
+<div class="block">
+    <h1>{PAGE_TITLE}</h1>
+    <form action="{FORM_ACTION}" method="POST">
+        <dl>
+            <dt><label for="page_name">Page Name:</label></dt>
+            <dd><input type="text" name="page_name" value=""/></dd>
+        </dl>
+        <dl>
+            <dt><label for="page_identifier">Page Identifier:</label></dt>
+            <dd><input type="text" name="page_identifier" value=""/></dd>
+        </dl>
+        <dl><dt><label for="parent">Page Parent</label>
+                <br/><span>Select the parent for this page, or 'Root' if you wish for it to be a main page.</span></dt>
+            <dd>{PARENT_SELECT}</dd>
+        </dl>
+        <dl>
+            <dd><textarea id="textareas" name="page_text"></textarea></dd>
+        </dl>
+        <input type="submit" name="save" value="Submit"/>
+    </form>
+</div>
+
+<!-- INCLUDE footer.html -->

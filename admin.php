@@ -19,11 +19,33 @@ else
                 $template->assign_var('PAGE_TITLE', 'ACP: New Page');
                 if (!isset($_POST['save']))
                 {
-                    $template_file = "admin_addpage.html";
+                    $template_file = "admin_newpage.html";
+                    $parent_select = generate_parent_select(0);
+                    $template->assign_vars(array(
+                      'PARENT_SELECT' => $parent_select,
+                        'FORM_ACTION' => './admin/addpage/'
+                    ));
                 }
                 else
                 {
                     $template_file = "admin_message.html";
+                    $page_title = request_var('page_name');
+                    $page_info = array(
+                       'page_title' => request_var('page_name', false),
+                       'page_identifier' => request_var('page_identifier', false),
+                       'page_parent' => request_var('parent', 0),
+                       'page_text' => $db->clean(htmlentities(request_var('page_text', '')))
+                    );
+                    $query = $db->build_query('insert', PAGES_TABLE, $page_info);
+                    $result = $db->query($query);
+                    if (!$result)
+                    {
+                        $template->assign_var('MESSAGE', 'Error: Page failed to save');
+                    }
+                    else
+                    {
+                        $template->assign_var('MESSAGE', 'Success! Page saved.');
+                    }
                 }
                 break;
             case 'editpage':
