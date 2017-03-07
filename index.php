@@ -10,14 +10,14 @@ if (file_exists("{$root_path}{$mode}.{$phpex}"))
     include "{$root_path}{$mode}.{$phpex}";
 }
 //Now check if file exists in the modules directory
-else if (file_exists("{$root_path}modules/{$mode}.{$phpex}"))
+else if (file_exists("{$root_path}modules/{$mode}/{$mode}.{$phpex}"))
 {
-    include "{$root_path}modules/{$mode}.{$phpex}";
+    include "{$root_path}modules/{$mode}/{$mode}.{$phpex}";
 }
 //Otherwise load from database.
 else
 {
-    $template->assign_var('INTRO_TEXT', $config->config['site_intro']);
+    $template->assign_var('INTRO_TEXT', html_entity_decode($config->config['site_intro']));
     if (file_exists($config->template_dir . '/' . $config->config['site_theme'] . '/template/' . $mode . '.html'))
     {
         $template_file = "{$mode}.html";
