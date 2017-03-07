@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 $phpex = "php";
 $root_path = "./";
 require("{$root_path}includes/common.{$phpex}");
-
+//die(print_r($user));
 //check if file exists in root directory for main modules
 if (file_exists("{$root_path}{$mode}.{$phpex}"))
 {

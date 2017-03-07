@@ -16,7 +16,7 @@ class user
             'user_level' => 0,
             'username' => '',
             'user_email' => '',
-            'logged_in' => false,
+            'logged_in' => 0,
             'date_registered' => 0,
             'permissions' => array(
                 'is_admin' => 0,
@@ -86,17 +86,13 @@ class user
     }
     function user_login($username, $password)
     {
-        global $config;
-        $key_len = floor(strlen($username)/2);
-        $key1 = substr($username, 0, $key_len);
-        $key2 = substr($username, $key_len);
-        $salt_len = floor(strlen($config->config['password_salt'])/2);
-        $salt1 = substr($config->config['password_salt'], 0 , $salt_len);
-        $salt2 = substr($config->config['password_salt'], $salt_len);
-        $newpass = $key1.$salt2.$password.$salt1.$key2;
+        global $db;
+        $newpass = $this->hash_password($username, $password);
+        $username = $db->clean($username);
         $query = "SELECT * FROM " . USERS_TABLE . " WHERE username='{$username}' AND password='{$newpass}'";
         $result = $db->query($query);
-        return $db->fetchrow($result);
+        $info = $db->fetchrow($result);
+        return $info;
     }
     function user_logout($session)
     {
@@ -106,15 +102,9 @@ class user
     }
     function create_user($user_array)
     {
-        global $config, $db;
-        $key_len = floor(strlen($user_array['username'])/2);
-        $key1 = substr($user_array['username'], 0, $key_len);
-        $key2 = substr($user_array['username'], $key_len);
-        $salt_len = floor(strlen($config->config['password_salt'])/2);
-        $salt1 = substr($config->config['password_salt'], 0 , $salt_len);
-        $salt2 = substr($config->config['password_salt'], $salt_len);
-        $newpass = $key1.$salt2.$user_array['password'].$salt1.$key2;
-        $user_array['password'] = $newpass;
+        global $db;
+        $user_array['password'] = $this->hash_password($user_array['username'], $user_array['password']);
+        $user_array['username'] = $db->clean($user_array['username']);
         $query = $db->build_query('insert', USERS_TABLE, $user_array);
         $result = $db->query($query);
         return $result;

@@ -1,0 +1,22 @@
+<!-- INCLUDE header.html -->
+<!-- IF ERROR > 0 -->
+<div class="block">
+    <h1>Message</h1>
+    <p>{MESSAGE}</p>
+</div>
+<!-- ENDIF -->
+<div class="block">
+    <h1>Login</h1>
+    <form action="./user/login/" method="POST">
+        <dl>
+            <dt><label for="username">Username:</label></dt>
+            <dd><input type="text" name="username" value=""/></dd>
+        </dl>
+        <dl>
+            <dt><label for="password">Password:</label></dt>
+            <dd><input type="text" name="password" value=""/></dd>
+        </dl>
+        <dl><dd><input type="submit" name="login" value="Login"/></dd></dl>
+    </form>
+</div>
+<!-- INCLUDE footer.html -->
