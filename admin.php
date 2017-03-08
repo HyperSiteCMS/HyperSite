@@ -7,7 +7,8 @@ if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_adm
 }
 else
 {
-    if (isset($module))
+    $module = request_var('mod', null);
+    if (($module != null) && file_exists("{$root_path}/modules/{$module}/admin_{$module}.{$phpex}"))
     {
         include "{$root_path}/modules/{$module}/admin_{$module}.{$phpex}";
     }
