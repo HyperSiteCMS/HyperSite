@@ -30,14 +30,14 @@ $script_name = explode('.', basename(str_replace(array('\\', '//'), '/', $_SERVE
 //Load classes
 $user = new user();
 //Lets check if current user is logged in
-if (isset($_COOKIE['hs_user_sess']))
+if (isset($_COOKIE['hs_user_sess']) && (!isset($_POST['login'])))
 {
     $session = $db->clean($_COOKIE['hs_user_sess']);
     $userinfo = $user->get_user('session', $session);
     if ($userinfo)
     {
         //Valid session so lets renew cookie and get info from database
-        setcookie('hs_user_sess', $session, time()+(86400*30));
+        setcookie('hs_user_sess', $session, time()+(86400*30),'/');
         $permissions = $user->get_permissions($userinfo['user_id']);
         $userinfo['permissions'] = $permissions;
         $userinfo['logged_in'] = true;
@@ -46,7 +46,7 @@ if (isset($_COOKIE['hs_user_sess']))
     else
     {
         //Not valid session so lets remove cookie
-        setcookie('hs_user_sess', '', time() - 3600);
+        setcookie('hs_user_sess', '', time() - 3600, '/');
     }
 }
 
