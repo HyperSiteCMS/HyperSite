@@ -98,7 +98,7 @@ class user
     {
         global $db;
         $query = $db->build_query('delete',SESSION_TABLE,false,array('uniq_id' => $session));
-        return $db->query($result);
+        return $db->query($query);
     }
     function create_user($user_array)
     {

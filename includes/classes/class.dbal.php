@@ -104,9 +104,27 @@ class dbal
     {
         if ($type !== '' && $table !== '')
         {
+            if ($type == 'create')
+            {
+                if (!is_array($assoc_array)) { return false; }
+                $query = "CREATE TABLE " . $table . " (";
+                $P == 0;
+                foreach ($assoc_array as $column)
+                {
+                    $query .= $column['name'] . " " . $column['type'];
+                    if ($column['type'] == 'INT' || $column['type'] == 'VARCHAR') { $query .= "({$column['legngth']})"; }
+                    if ($column['type'] == 'INT') { $query .= " UNSIGNED"; }
+                    if ($column['auto_increment'] == true) { $query .= " AUTO_INCREMENT"; }
+                    if ($column['primary'] == true) { $query .= " PRIMARY KEY"; }
+                    if ($column['allow_null'] == false) { $query .= " NOT NULL"; }
+                    if (++$P < $count($assoc_array)) { $query .= ","; }
+                }
+                $query .= ");";
+                return $query;
+            }
             if ($type == 'insert')
             {
-                if (!is_array($assoc_array)) return false;
+                if (!is_array($assoc_array)) { return false; }
                 $query = "INSERT INTO " . $table . " (";
                 $fields = array_keys($assoc_array);
                 $values = array_values($assoc_array);

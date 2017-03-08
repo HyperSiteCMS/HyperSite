@@ -8,6 +8,25 @@ if ($user->user_info['logged_in'] == 1)
             break;
         case 'settings':
             break;
+        case 'logout':
+            $session = $db->clean($_COOKIE['hs_user_sess']);
+            $template_file = "user_message.html";
+            if ($user->user_logout($session))
+            {
+                setcookie('hs_user_sess', '', time()-3600, '/');
+                $template->assign_vars(array(
+                    'PAGE_TITLE' => 'Logout',
+                    'MESSAGE' => 'Logged out successfully'
+                ));
+            }
+            else
+            {
+                $template->assign_vars(array(
+                    'PAGE_TITLE' => 'Error',
+                    'MESSAGE' => 'Failed to logout. Please contact an administrator if this issue keeps occurring.'
+                ));
+            }
+            break;
     }
 }
 else 
@@ -31,7 +50,7 @@ else
                 if ($user_info)
                 {
                     $sess_id = unique_id();
-                    setcookie('hs_user_sess', $sess_id, time()+(86400*30)); //Set cookie for 30 days to auto login.
+                    setcookie('hs_user_sess', $sess_id, time()+(86400*30),'/'); //Set cookie for 30 days to auto login.
                     $session_info = array(
                         'user_id' => $user_info['user_id'],
                         'uniq_id' => $sess_id
@@ -48,14 +67,14 @@ else
                         $template_file = "user_message.html";
                         $template->assign_var('ERROR', 1);
                         $template->assign_var('MESSAGE', 'Error: Unable to save session information');
-                        setcookie('hs_user_sess', '', time()-3600);
+                        setcookie('hs_user_sess', '', time()-3600,'/');
                         break;
                     }
                     $userinfo = $user->get_user('session', $sess_id);
                     if ($userinfo)
                     {
                         //Valid session so lets renew cookie and get info from database
-                        setcookie('hs_user_sess', $session, time() + (86400*30));
+                        setcookie('hs_user_sess', $sess_id, time() + (86400*30),'/');
                         $permissions = $user->get_permissions($userinfo['user_id']);
                         $userinfo['permissions'] = $permissions;
                         $userinfo['logged_in'] = 1;
@@ -73,8 +92,6 @@ else
             {
                 $template_file = "user_login.html";
             }
-            break;
-        case 'logout':
             break;
         case 'register':
             break;
