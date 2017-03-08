@@ -119,16 +119,17 @@ class dbal
             {
                 if (!is_array($assoc_array)) { return false; }
                 $query = "CREATE TABLE " . $table . " (";
-                $P == 0;
-                foreach ($assoc_array as $column)
+                $P = 0;
+                foreach ($assoc_array as $column => $fields)
                 {
-                    $query .= $column['name'] . " " . $column['type'];
-                    if ($column['type'] == 'INT' || $column['type'] == 'VARCHAR') { $query .= "({$column['legngth']})"; }
-                    if ($column['type'] == 'INT') { $query .= " UNSIGNED"; }
-                    if ($column['auto_increment'] == true) { $query .= " AUTO_INCREMENT"; }
-                    if ($column['primary'] == true) { $query .= " PRIMARY KEY"; }
-                    if ($column['allow_null'] == false) { $query .= " NOT NULL"; }
-                    if (++$P < $count($assoc_array)) { $query .= ","; }
+                    $query .= $column . " " . $fields['type'];
+                    if ($fields['type'] == 'INT' || $fields['type'] == 'VARCHAR') { $query .= "({$fields['length']})"; }
+                    if ($fields['type'] == 'INT') { $query .= " UNSIGNED"; }
+                    if ($fields['auto_increment'] == true) { $query .= " AUTO_INCREMENT"; }
+                    if ($fields['primary'] == true) { $query .= " PRIMARY KEY"; }
+                    if ($fields['allow_null'] == false) { $query .= " NOT NULL"; }
+                    if (isset($fields['default'])) { $query .= " DEFAULT '{$fields['default']}'"; }
+                    if (++$P < count($assoc_array)) { $query .= ","; }
                 }
                 $query .= ");";
                 return $query;

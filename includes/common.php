@@ -21,11 +21,12 @@ require("{$root_path}includes/config.{$phpex}");
 $config = new config();
 
 //Next include required classes and functions
+require("{$root_path}includes/constants.{$phpex}");
 require("{$root_path}includes/functions.{$phpex}");
 require("{$root_path}includes/classes/class.dbal.{$phpex}");
 require("{$root_path}includes/classes/class.template.{$phpex}");
 require("{$root_path}includes/classes/class.user.{$phpex}");
-require("{$root_path}includes/constants.{$phpex}");
+require("{$root_path}includes/classes/class.modules.{$phpex}");
 
 //Open database connection
 $db = new dbal($config->mysql_server, $config->mysql_user, $config->mysql_pass, $config->mysql_db, $config->mysql_port);
@@ -62,7 +63,7 @@ if (isset($_COOKIE['hs_user_sess']) && (!isset($_POST['login'])))
         setcookie('hs_user_sess', '', time() - 3600, '/');
     }
 }
-
+$modules = new modules();
 $template = new template($config->template_dir . '/' . $config->config['site_theme'] . '/template/','default');
 $mode = request_var('mode', 'home');
 //Override mode if mode=index to stop a continuous loop

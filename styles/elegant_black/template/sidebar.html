@@ -1,8 +1,29 @@
+<!-- IF HAS_SUBPAGES -->
 <div class="block">
-<h2>Links</h2>
-<p>
-    - <a href="http://www.google.com" target="_blank">Google</a><br/>
-    - <a href="http://www.youtube.com" target="_blank">Youtube</a><br/>
-    - <a href="http://www.facebook.com" target="_blank">Facebook</a><br/>
-</p>
+<h2>Sub-Pages</h2>
+<ul>
+    <!-- BEGIN subpages -->
+    <li><a href="{subpages.LINK}">{subpages.TITLE}</a></li>
+    <!-- END subpages -->
+</ul> 
 </div>
+<!-- ENDIF -->
+<!-- IF USER_IS_ADMIN && IN_ACP -->
+<div class="block">
+    <h2>Admin Links</h2>
+    <ul>
+        <li><a href="./admin/">Admin Home</a></li>
+        <li><a href="./admin/pages/">Page Management</a></li>
+        <li><a href="./admin/modules/">Module Management</a></li>
+        <li><a href="./admin/users/">User Mangement</a></li>
+        <li><a href="./admin/nav/">Navigation Management</a></li>
+    </ul>
+    <h2>Modules</h2>
+    
+    <ul>
+        <!-- BEGIN sidebaradminlinks -->
+        <li><a href="{sidebaradminlinks.URL}">{sidebaradminlinks.TITLE}</a></li>
+        <!-- END sidebaradminlinks -->
+    </ul>
+</div>
+<!-- ENDIF -->

@@ -1,0 +1,40 @@
+<!-- INCLUDE header.html -->
+<div class="block">
+    <h1>{PAGE_TITLE}</h1>
+    <p>You can manage modules for your website in this section.</p>
+</div>
+
+<div class="block">
+    <h1>Loaded Modules</h1>
+    <table width="100%" cellspacing="1" cellpadding="1">
+        <tr><th>Mod Name</th><th>Version</th><th>Author</th><th>Description</th><th>Unload</th></tr>
+        <!-- BEGIN loaded -->
+        <tr>
+            <td>{loaded.NAME}</td>
+            <td>{loaded.VERSION}</td>
+            <td>{loaded.AUTHOR}</td>
+            <td>{loaded.DESC}</td>
+            <td><a href="./admin/unloadmod/{loaded.NAME}/">Unload<a></td>
+        </tr>
+        <!-- END loaded -->
+    </table>
+</div>
+
+
+<div class="block">
+    <h1>Unloaded Modules</h1>
+    <table width="100%" cellspacing="1" cellpadding="1">
+        <tr><th>Mod Name</th><th>Version</th><th>Author</th><th>Description</th><th>Load</th></tr>
+        <!-- BEGIN unloaded -->
+        <tr>
+            <td>{unloaded.NAME}</td>
+            <td>{unloaded.VERSION}</td>
+            <td>{unloaded.AUTHOR}</td>
+            <td>{unloaded.DESC}</td>
+            <td><a href="./admin/loadmod/{unloaded.NAME}/">Load<a></td>
+        </tr>
+        <!-- END unloaded -->
+    </table>
+</div>
+
+<!-- INCLUDE footer.html -->

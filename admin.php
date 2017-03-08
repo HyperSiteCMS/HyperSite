@@ -25,6 +25,15 @@ if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_adm
 }
 else
 {
+    $template->assign_var('IN_ACP', true);
+    //Lets create some dynamic links for sidebar relating to modules.
+    foreach ($modules->loaded as $amod)
+    {
+        $template->assign_block_vars('sidebaradminlinks', array(
+           'URL' => './admin/&mod=' . $amod['name'],
+            'TITLE' => $amod['name']
+        ));
+    }
     $module = request_var('mod', null);
     if (($module != null) && file_exists("{$root_path}/modules/{$module}/admin_{$module}.{$phpex}"))
     {
@@ -127,6 +136,41 @@ else
                     ));
                 }
                 $template_file = "admin_message.html";
+                break;
+            case 'modules':
+                foreach ($modules->loaded as $loaded_mod)
+                {
+                    $template->assign_block_vars('loaded', array(
+                        'NAME' => $loaded_mod['name'],
+                        'VERSION' => $loaded_mod['version'],
+                        'DESC' => $loaded_mod['description'],
+                        'AUTHOR' => $loaded_mod['author']
+                    ));
+                }
+                
+                foreach ($modules->unloaded as $unloaded_mod)
+                {
+                    $template->assign_block_vars('unloaded', array(
+                        'NAME' => $unloaded_mod['name'],
+                        'VERSION' => $unloaded_mod['version'],
+                        'DESC' => $unloaded_mod['description'],
+                        'AUTHOR' => $unloaded_mod['author']
+                    ));
+                }
+                $template_file = "admin_modules.html";
+                $template->assign_var('PAGE_TITLE', 'ACP: Modules');
+                break;
+            case 'loadmod':
+                $mod_name = $db->clean($i);
+                $loaded = $modules->load_module($mod_name);
+                if ($loaded)
+                {
+                    $template->assign_vars(array(
+                        'MESSAGE' => 'Module ' . $mod_name . ' has been loaded successfully.',
+                        'PAGE_TITLE' => 'Module Loaded'
+                    ));
+                    $template_file = "admin_message.html";
+                }
                 break;
             default:
                 $template_file = "admin.html";
