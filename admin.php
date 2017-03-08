@@ -1,5 +1,5 @@
 <?php
-if (!$user->user_info['logged_in'] || !$user->user_info['permissions']['is_admin'])
+if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_admin'] < 1)
 {
     $template_file = "admin_message.html";
     $template->assign_var('MESSAGE', 'Error: You must be logged in with administrative permissions to view this page.');
@@ -29,11 +29,10 @@ else
                 else
                 {
                     $template_file = "admin_message.html";
-                    $page_title = request_var('page_name');
                     $page_info = array(
-                       'page_title' => request_var('page_name', false),
-                       'page_identifier' => request_var('page_identifier', false),
-                       'page_parent' => request_var('parent', 0),
+                       'page_title' => $db->clean(request_var('page_name', false)),
+                       'page_identifier' => $db->clean(request_var('page_identifier', false)),
+                       'page_parent' => $db->clean(request_var('parent', 0)),
                        'page_text' => $db->clean(htmlentities(request_var('page_text', '')))
                     );
                     $query = $db->build_query('insert', PAGES_TABLE, $page_info);
@@ -53,7 +52,7 @@ else
                 if (!isset($_POST['save']))
                 {
                     $template_file = "admin_editpage.html";
-                    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_id={$i}";
+                    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_id={$db->clean($i)}";
                     $result = $db->query($query);
                     $page_info = $db->fetchrow($result);
                     $parent_select = generate_parent_select($page_info['page_parent']);
@@ -67,14 +66,13 @@ else
                 }
                 else
                 {
-                    $page_title = request_var('page_name');
                     $page_info = array(
-                       'page_title' => request_var('page_name', false),
-                       'page_identifier' => request_var('page_identifier', false),
-                       'page_parent' => request_var('parent', 0),
+                       'page_title' => $db->clean(request_var('page_name', false)),
+                       'page_identifier' => $db->clean(request_var('page_identifier', false)),
+                       'page_parent' => $db->clean(request_var('parent', 0)),
                        'page_text' => $db->clean(htmlentities(request_var('page_text', '')))
                     );
-                    $where = array('page_id' => $i);
+                    $where = array('page_id' => $db->clean($i));
                     $query = $db->build_query('update', PAGES_TABLE, $page_info, $where);
                     $result = $db->query($query);
                     if (!$result)
@@ -88,8 +86,27 @@ else
                     $template_file = "admin_message.html";
                 }
                 break;
-            case 'delpage':
-                $template->assign_var('PAGE_TITLE', 'ACP: Delete Page');
+            case 'deletepage':
+                $where = array('page_id' => $db->clean($i));               
+                //Before we delete, find any sub-pages and move them up a level
+                $query = "UPDATE " . PAGES_TABLE . " SET page_parent=0 WHERE page_parent={$db->clean($i)};";
+                $db->query($query);
+                $query = $db->build_query('delete', PAGES_TABLE, false, $where);
+                if ($db->query($query))
+                {
+                    $template->assign_vars(array(
+                        'PAGE_TITLE' => 'ACP: Delete Page Success',
+                        'MESSAGE' => 'Page deleted successfully.'
+                    ));
+                    
+                }
+                else
+                {
+                    $template->assign_vars(array(
+                        'PAGE_TITLE' => 'ACP: Delete Page Error',
+                        'MESSAGE' => 'Unable to delete page.'
+                    ));
+                }
                 $template_file = "admin_message.html";
                 break;
             default:

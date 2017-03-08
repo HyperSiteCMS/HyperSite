@@ -2,7 +2,10 @@
 <div id="footer">
     <p>
           <!-- IF USER_LOGGED_IN > 0 -->
-          <a href="./user/logout/">Logout</a>
+          <a href="./user/logout/">Logout</a> 
+          <!-- IF USER_IS_ADMIN > 0 -->
+          | <a href="./admin/">Admin CP</a>
+          <!-- ENDIF -->
           <!-- ELSE -->
           <a href="./user/login/">Login</a> | <a href="./user/register/">Register</a>
           <!-- ENDIF -->
