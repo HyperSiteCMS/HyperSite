@@ -1,10 +1,13 @@
 <?php
-/*
- * Class.Template.php
- * (c) HyperSite 2017
- * Created by Ryan Morrison
- * License: http://opensource.org/licenses/gpl-license.php GNU Public License
- */
+/**
+*
+* @package HyperSite CMS
+* @author phpBB Group
+* @copyright (c) 2005 phpBB Group, sections (c) 2001 ispi of Lincoln Inc
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+*
+*/
+
 class template
 {
 	/** variable that holds all the data we'll be substituting into

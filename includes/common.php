@@ -1,8 +1,21 @@
 <?php
-/* 
- * Common.php
- * Loads all common functions and classes
+/*
+ * @package         HyperSite CMS
+ * @file            common.php
+ * @file_desc       Loads classes and default values used throughout the site.
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  */
+
+ /* Check if we are in CMS otherwise exit code. */
+if (!defined('IN_HSCMS'))
+{
+	exit;
+}
+
+/* Main Code here */
 //Include and load config
 require("{$root_path}includes/config.{$phpex}");
 $config = new config();

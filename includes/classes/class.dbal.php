@@ -1,10 +1,21 @@
 <?php
 /*
- * Class.DBAL.PHP
- * (c) HyperSite 2017
- * Created by Ryan Morrison
- * License: http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @package         HyperSite CMS
+ * @file            class.dbal.php
+ * @file_desc       class for dealing with MySQL database connections.
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  */
+
+ /* Check if we are in CMS otherwise exit code. */
+if (!defined('IN_HSCMS'))
+{
+	exit;
+}
+
+/* Main Code here */
 class dbal
 {
     var $connection;

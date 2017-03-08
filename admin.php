@@ -1,4 +1,22 @@
 <?php
+/*
+ * @package         HyperSite CMS
+ * @file            admin.php
+ * @file_desc       Handles the administrative side for website owners.
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+
+ /* Check if we are in CMS otherwise exit code. */
+if (!defined('IN_HSCMS'))
+{
+	exit;
+}
+
+/* Main Code here */
+define('IN_ACP', true);
 if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_admin'] < 1)
 {
     $template_file = "admin_message.html";

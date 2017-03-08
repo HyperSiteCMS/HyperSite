@@ -1,4 +1,21 @@
 <?php
+/*
+ * @package         HyperSite CMS
+ * @file            functions.php
+ * @file_desc       Various functions for use throughout the site.
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+
+ /* Check if we are in CMS otherwise exit code. */
+if (!defined('IN_HSCMS'))
+{
+	exit;
+}
+
+/* Main Code here */
 function request_var($var_name, $default, $cookie = false)
 {
     if (!$cookie && isset($_COOKIE[$var_name]))

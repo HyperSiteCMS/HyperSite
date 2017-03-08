@@ -1,4 +1,21 @@
 <?php
+/*
+ * @package         HyperSite CMS
+ * @file            user.php
+ * @file_desc       Handles anything on client-side for users (Login, logout, register, settings etc)
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+
+ /* Check if we are in CMS otherwise exit code. */
+if (!defined('IN_HSCMS'))
+{
+	exit;
+}
+
+/* Main Code here */
 if ($user->user_info['logged_in'] == 1)
 {
     switch ($act)

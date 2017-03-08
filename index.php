@@ -1,5 +1,18 @@
 <?php
+/*
+ * @package         HyperSite CMS
+ * @file            index.php
+ * @file_desc       The main file. Basically the file that is called at all times.
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
+
+
+/* Main Code here */
 error_reporting(E_ALL);
+define('IN_HSCMS', true);
 $phpex = "php";
 $root_path = "./";
 require("{$root_path}includes/common.{$phpex}");

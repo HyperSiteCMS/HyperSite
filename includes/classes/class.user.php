@@ -1,11 +1,21 @@
 <?php
 /*
- * Class.User.PHP
- * User management class
- * (c) HyperSite 2017
- * Created by Ryan Morrison
- * License:
+ * @package         HyperSite CMS
+ * @file            class.user.php
+ * @file_desc       Class to store and fetch all user information for use throughout the package.
+ * @author          Ryan Morrison
+ * @website         http://www.hypersite.info
+ * @copyright       (c) 2017 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  */
+
+ /* Check if we are in CMS otherwise exit code. */
+if (!defined('IN_HSCMS'))
+{
+	exit;
+}
+
+/* Main Code here */
 class user
 {
     var $user_info = array();
