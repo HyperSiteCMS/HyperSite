@@ -40,7 +40,7 @@ class dbal
         {
             $this->error = true;
             $this->error_msg = $this->connection->connect_error;
-            die("Error connecting to database: $this->error_msg");
+            return false;
         }
         return $this->connection;
     }
