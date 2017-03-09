@@ -97,12 +97,23 @@ foreach ($ar as $navitem)
     ));
 }
 //Load other navigation urls..
-$query = "SELECT * FROM " . NAV_TABLE;
+$query = "SELECT * FROM " . NAV_TABLE . " WHERE area=1 OR area=3";
 $nav = $db->fetchall($db->query($query));
 foreach ($nav as $item)
 {
     $template->assign_block_vars('nav', array(
         'URL' => $item['url'],
         'TITLE' => $item['title']
+    ));
+}
+
+//Load Sidebar Navigation Urls
+$query = "SELECT * FROM " . NAV_TABLE . " WHERE area=2 OR area=3";
+$sbnav = $db->fetchall($db->query($query));
+foreach ($sbnav as $sb)
+{
+    $template->assign_block_vars('sbnav', array(
+        'URL' => $sb['url'],
+        'TITLE' => $sb['title']
     ));
 }
