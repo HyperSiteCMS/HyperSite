@@ -146,7 +146,7 @@ class dbal
                     {
                         $query .= ", ";
                     }
-                    $query .= $fields[$x];
+                    $query .= '`'.$fields[$x].'`';
                 }
                 $query .= ") VALUES (";
                 for ($x = 0; isset($values[$x]); $x++) 

@@ -1,6 +1,7 @@
 {
-    "name": "test_mod",
-    "description": "some description",
-    "version": "1.0",
-    "author": "RMorrison"
+    "mod_name": "test_mod",
+    "mod_description": "some description",
+    "mod_version": "1.0",
+    "mod_author": "Ryan Morrison",
+    "mod_install_file": "install_mod.php"
 }

@@ -22,3 +22,4 @@ define('USERS_TABLE', $config->table_prefix . 'users');
 define('SESSION_TABLE', $config->table_prefix . 'sessions');
 define('LEVELS_TABLE', $config->table_prefix . 'user_levels');
 define('MODULE_TABLE', $config->table_prefix . 'modules');
+define('NAV_TABLE',$config->table_prefix . 'navigation');

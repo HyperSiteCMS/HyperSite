@@ -16,5 +16,4 @@ if (!defined('IN_HSCMS'))
 }
 
 /* Main Code here */
-$template_file .= "{$root_path}modules/test_mod/styles/elegant_black/template/test_mod.html";
-
+$template_file .= "{$root_path}modules/test_mod/styles/{$config->config['site_theme']}/template/test_mod.html";

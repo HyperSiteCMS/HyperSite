@@ -92,7 +92,17 @@ $ar = $db->fetchall($result);
 foreach ($ar as $navitem)
 {
     $template->assign_block_vars('nav', array(
-        'URL' => $navitem['page_identifier'],
+        'URL' => './'.$navitem['page_identifier'].'/',
         'TITLE' => $navitem['page_title']
+    ));
+}
+//Load other navigation urls..
+$query = "SELECT * FROM " . NAV_TABLE;
+$nav = $db->fetchall($db->query($query));
+foreach ($nav as $item)
+{
+    $template->assign_block_vars('nav', array(
+        'URL' => $item['url'],
+        'TITLE' => $item['title']
     ));
 }

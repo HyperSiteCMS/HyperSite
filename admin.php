@@ -30,14 +30,25 @@ else
     foreach ($modules->loaded as $amod)
     {
         $template->assign_block_vars('sidebaradminlinks', array(
-           'URL' => './admin/&mod=' . $amod['name'],
-            'TITLE' => $amod['name']
+            'URL' => './admin/&mod=' . $amod['mod_name'],
+            'TITLE' => $amod['mod_name']
         ));
     }
     $module = request_var('mod', null);
     if (($module != null) && file_exists("{$root_path}/modules/{$module}/admin_{$module}.{$phpex}"))
     {
-        include "{$root_path}/modules/{$module}/admin_{$module}.{$phpex}";
+        if (isset($modules->loaded[$module]))
+        {
+            include "{$root_path}/modules/{$module}/admin_{$module}.{$phpex}";
+        }
+        else
+        {
+            $template_file = "admin_message.html";
+            $template->assign_vars(array(
+                'PAGE_TITLE' => "Error",
+                'MESSAGE' => "The selected module has not been loaded."
+            ));
+        }
     }
     else
     {
@@ -141,20 +152,20 @@ else
                 foreach ($modules->loaded as $loaded_mod)
                 {
                     $template->assign_block_vars('loaded', array(
-                        'NAME' => $loaded_mod['name'],
-                        'VERSION' => $loaded_mod['version'],
-                        'DESC' => $loaded_mod['description'],
-                        'AUTHOR' => $loaded_mod['author']
+                        'NAME' => $loaded_mod['mod_name'],
+                        'VERSION' => $loaded_mod['mod_version'],
+                        'DESC' => $loaded_mod['mod_description'],
+                        'AUTHOR' => $loaded_mod['mod_author']
                     ));
                 }
                 
                 foreach ($modules->unloaded as $unloaded_mod)
                 {
                     $template->assign_block_vars('unloaded', array(
-                        'NAME' => $unloaded_mod['name'],
-                        'VERSION' => $unloaded_mod['version'],
-                        'DESC' => $unloaded_mod['description'],
-                        'AUTHOR' => $unloaded_mod['author']
+                        'NAME' => $unloaded_mod['mod_name'],
+                        'VERSION' => $unloaded_mod['mod_version'],
+                        'DESC' => $unloaded_mod['mod_description'],
+                        'AUTHOR' => $unloaded_mod['mod_author']
                     ));
                 }
                 $template_file = "admin_modules.html";
@@ -168,6 +179,34 @@ else
                     $template->assign_vars(array(
                         'MESSAGE' => 'Module ' . $mod_name . ' has been loaded successfully.',
                         'PAGE_TITLE' => 'Module Loaded'
+                    ));
+                    $template_file = "admin_message.html";
+                }
+                else
+                {
+                    $template->assign_vars(array(
+                        'MESSAGE' => 'Module ' . $mod_name . ' has not been loaded.',
+                        'PAGE_TITLE' => 'Module Failed to Load'
+                    ));
+                    $template_file = "admin_message.html";
+                }
+                break;
+            case 'unloadmod':
+                $mod_name = $db->clean($i);
+                $unloaded = $modules->unload_module($mod_name);
+                if ($unloaded)
+                {
+                    $template->assign_vars(array(
+                        'MESSAGE' => 'Module '.$mod_name.' has been unloaded successfully',
+                        'PAGE_TITLE' => 'Module Unloaded'
+                    ));
+                    $template_file = "admin_message.html";
+                }
+                else 
+                {
+                    $template->assign_vars(array(
+                        'MESSAGE' => 'Module '.$mod_name.' has not been unloaded!',
+                        'PAGE_TITLE' => 'Module Failed to Unloaded'
                     ));
                     $template_file = "admin_message.html";
                 }

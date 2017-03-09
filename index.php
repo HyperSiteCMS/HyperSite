@@ -23,7 +23,7 @@ if (file_exists("{$root_path}{$mode}.{$phpex}"))
     include "{$root_path}{$mode}.{$phpex}";
 }
 //Now check if file exists in the modules directory
-else if (file_exists("{$root_path}modules/{$mode}/{$mode}.{$phpex}"))
+else if (file_exists("{$root_path}modules/{$mode}/{$mode}.{$phpex}") && isset($modules->loaded[$mode]))
 {
     $template_file = "../../../";
     include "{$root_path}modules/{$mode}/{$mode}.{$phpex}";
@@ -43,28 +43,20 @@ else
     $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$mode}'";
     $result = $db->query($query);
     $page = $db->fetchrow($result);
-    $template->assign_vars(array(
-         'PAGE_TITLE' => $page['page_title'],
-         'PAGE_TEXT' => html_entity_decode($page['page_text'])
-    ));
-    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_id']}";
-    $result = $db->query($query);
-    $subpages = $db->fetchall($result);
-    if (count($subpages) > 0)
+    if (!isset($page['page_title']))
     {
-        $template->assign_var('HAS_SUBPAGES', true);
-        foreach ($subpages as $sub)
-        {
-            $template->assign_block_vars('subpages', array(
-                'LINK' => $sub['page_identifier'],
-                'TITLE' => $sub['page_title']
-            ));
-        }
+        $template_file = "user_message.html";
+        $template->assign_vars(array(
+             'PAGE_TITLE' => $page['page_title'],
+             'MESSAGE' => 'The page you are trying to find does not exist, or the module is not loaded.'
+        ));
     }
-    //If current page is a sub-page, find other sub-pages with same parent
-    if ($page['page_parent'] > 0)
-    {
-        $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_parent']}";
+    else {
+        $template->assign_vars(array(
+             'PAGE_TITLE' => $page['page_title'],
+             'PAGE_TEXT' => html_entity_decode($page['page_text'])
+        ));
+        $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_id']}";
         $result = $db->query($query);
         $subpages = $db->fetchall($result);
         if (count($subpages) > 0)
@@ -76,6 +68,24 @@ else
                     'LINK' => $sub['page_identifier'],
                     'TITLE' => $sub['page_title']
                 ));
+            }
+        }
+        //If current page is a sub-page, find other sub-pages with same parent
+        if ($page['page_parent'] > 0)
+        {
+            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_parent']}";
+            $result = $db->query($query);
+            $subpages = $db->fetchall($result);
+            if (count($subpages) > 0)
+            {
+                $template->assign_var('HAS_SUBPAGES', true);
+                foreach ($subpages as $sub)
+                {
+                    $template->assign_block_vars('subpages', array(
+                        'LINK' => $sub['page_identifier'],
+                        'TITLE' => $sub['page_title']
+                    ));
+                }
             }
         }
     }
