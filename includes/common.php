@@ -17,7 +17,7 @@ if (!defined('IN_HSCMS'))
 
 /* Main Code here */
 //Include and load config
-require("{$root_path}includes/config.{$phpex}");
+require("{$root_path}includes/classes/class.config.{$phpex}");
 $config = new config();
 
 //Next include required classes and functions
@@ -29,7 +29,7 @@ require("{$root_path}includes/classes/class.user.{$phpex}");
 require("{$root_path}includes/classes/class.modules.{$phpex}");
 
 //Open database connection
-$db = new dbal($config->mysql_server, $config->mysql_user, $config->mysql_pass, $config->mysql_db, $config->mysql_port);
+$db = new dbal($config->mysql['server'], $config->mysql['user'], $config->mysql['pass'], $config->mysql['db'], $config->mysql['port']);
 //Load settings from Database
 $query = "SELECT * FROM " . SETTINGS_TABLE;
 $result = $db->query($query);

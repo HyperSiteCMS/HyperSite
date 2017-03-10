@@ -16,10 +16,16 @@ if (!defined('IN_HSCMS'))
 }
 
 /* Main Code here */
-define('SETTINGS_TABLE', $config->table_prefix . 'settings');
-define('PAGES_TABLE', $config->table_prefix . 'pages');
-define('USERS_TABLE', $config->table_prefix . 'users');
-define('SESSION_TABLE', $config->table_prefix . 'sessions');
-define('LEVELS_TABLE', $config->table_prefix . 'user_levels');
-define('MODULE_TABLE', $config->table_prefix . 'modules');
-define('NAV_TABLE',$config->table_prefix . 'navigation');
+define('SETTINGS_TABLE', $config->mysql['table_prefix'] . 'settings');
+define('PAGES_TABLE', $config->mysql['table_prefix'] . 'pages');
+define('USERS_TABLE', $config->mysql['table_prefix'] . 'users');
+define('SESSION_TABLE', $config->mysql['table_prefix'] . 'sessions');
+define('LEVELS_TABLE', $config->mysql['table_prefix'] . 'user_levels');
+define('MODULE_TABLE', $config->mysql['table_prefix'] . 'modules');
+define('NAV_TABLE',$config->mysql['table_prefix'] . 'navigation');
+
+//CHMOD
+@define('CHMOD_ALL', 7);
+@define('CHMOD_READ', 4);
+@define('CHMOD_WRITE', 2);
+@define('CHMOD_EXECUTE', 1);

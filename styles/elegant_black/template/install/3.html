@@ -1,0 +1,29 @@
+<!-- INCLUDE header.html -->
+<!-- IF ERROR > 0 -->
+<div class="block">
+    <h1>Error!</h1>
+    <p>{MESSAGE}</p>
+</div>
+<!-- ENDIF -->
+<div class="block">
+    <h1>Some Settings</h1>
+    <p>Fill in the form below to continue site set up</p>
+    <form action="./install.php?stage=4" method="POST">
+        <fieldset><legend>Admin Info</legend>
+    <table width="100%">
+        <tr><td>Username</td><td><input type="text" name="admin_user"/></td></tr>
+        <tr><td>Password</td><td><input type="password" name="admin_pass" /></td></tr>
+        <tr><td>Email</td><td><input type="text" name="admin_email" /></td></tr>
+    </table>
+        </fieldset>
+        <fieldset><legend>Site Settings</legend>
+            <table width="100%">
+                <tr><td>Site Title</td><td><input type="text" name="site_title" value="HyperSite"/></td></tr>
+                <tr><td>Site Description</td><td><input type="text" name="site_desc" value="A CMS for Everyone" /></td></tr>
+                <tr><td valign="top">Intro Text</td><td><textarea name="site_intro">Welcome to HyperSite</textarea></td></tr>
+            </table>
+        </fieldset>
+        <center><input type="submit" class="mainaction" name="Submit" value="Submit"/></center>
+    </form>
+</div>
+</div>

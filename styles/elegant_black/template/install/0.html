@@ -7,23 +7,11 @@
 <!-- ENDIF -->
 <div class="block">
     <h1>{SITE_TITLE}</h1>
-    <p>Fill in the form below to start the installation process.</p>
-    <form action="./install.php?stage=1" method="POST">
-        <center><table width="100%">
-            <tr><td>MySQL Host:<br/>Hostname of your MySQL server. Usually 'localhost' is fine.</td>
-                <td><input type="text" name="mysql_host" value="localhost" /></td></tr>
-            <tr><td>MySQL Port:<br/>Port of your MySQL server. Usually '3306' is fine.</td>
-                <td><input type="text" name="mysql_port" value="3306" /></td></tr>
-            <tr><td>MySQL User:<br/>Username for MySQL Server.</td>
-                <td><input type="text" name="mysql_user" value="root" /></td></tr>
-            <tr><td>MySQL Pass:<br/>Password for MySQL Server.</td>
-                <td><input type="password" name="mysql_pass" /></td></tr>
-            <tr><td>MySQL Database:<br/>Name of Database to use</td>
-                <td><input type="text" name="mysql_db" value="hypersite" /></td></tr>
-            <tr><td>Table Prefix:<br/>Only needs to be changed if you host more than one site on this database</td>
-                <td><input type="text" name="table_prefix" value="hs_" /></td></tr>
-            <tr><td colspan="2"><center><input type="submit" name="submit" value="Submit"/></center></td></tr>              
-            </table></center>
-    </form>
+    <p>
+        Please ensure you have modified the <b>includes/conf.json</b> file with your database settings before continuing.
+        Once you have done this, click continue below.<br/>
+        <div class="rightbutton"><a class="mainaction" href="./install.php?stage=1">Continue</a></div>
+    </p>
+    
 </div>
 </div>

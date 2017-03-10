@@ -14,7 +14,7 @@
 error_reporting(E_ALL);
 define('IN_HSCMS', true);
 $phpex = "php";
-$root_path = "./";
+$root_path = getcwd().'/';
 if (file_exists('install.'.$phpex))
 {
     header("Location: ../install.{$phpex}");

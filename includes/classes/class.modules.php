@@ -100,7 +100,7 @@ class modules {
             {
                 if (key($install_actions[$x]) == 'create')
                 {
-                    $table_name = $config->table_prefix . key($install_actions[$x]['create']);
+                    $table_name = $config->mysql['table_prefix'] . key($install_actions[$x]['create']);
                     $fields = $install_actions[$x]['create'][key($install_actions[$x]['create'])];
                     $query = $db->build_query('create', $table_name, $fields);
                     $result = $db->query($query) or die('Unable to create table for Module<br/>' . print_r("Table: {$table_name}") . " <br/>" . print_r($fields));
@@ -108,7 +108,7 @@ class modules {
                 if (key($install_actions[$x]) == 'insert')
                 {
                     $assoc_array = $install_actions[$x]['insert']['entries'];
-                    $table_name = $config->table_prefix . $install_actions[$x]['insert']['table'];
+                    $table_name = $config->mysql['table_prefix'] . $install_actions[$x]['insert']['table'];
                     $query = $db->build_query('insert', $table_name, $assoc_array) or die("Unable to create query?");
                     $result = $db->query($query) or die('Unable to Insert data into database for Module: ' . $query);
                 }
@@ -120,13 +120,13 @@ class modules {
             {
                 if (key($install_actions[$x]) == 'create')
                 {
-                    $table_name = $config->table_prefix . key($install_actions[$x]['create']);
+                    $table_name = $config->mysql['table_prefix'] . key($install_actions[$x]['create']);
                     $query = "DROP TABLE {$table_name};";
                     $result = $db->query($query) or die("Unable to destroy table");
                 }
                 if (key($install_actions[$x]) == 'insert')
                 {
-                    $table_name = $config->table_prefix . $install_actions[$x]['insert']['table'];
+                    $table_name = $config->mysql['table_prefix'] . $install_actions[$x]['insert']['table'];
                     $where = $install_actions[$x]['insert']['entries'];
                     $query = $db->build_query('delete', $table_name, false, $where);
                     $result = $db->query($query) or die("Unable to remove data from table");
