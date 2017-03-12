@@ -39,6 +39,7 @@ else
     {
         if (isset($modules->loaded[$module]))
         {
+            $template_file = "../../../";
             include "{$root_path}/modules/{$module}/admin_{$module}.{$phpex}";
         }
         else
