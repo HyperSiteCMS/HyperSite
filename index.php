@@ -23,6 +23,7 @@ if (file_exists('install.'.$phpex))
 else
 {
     require("{$root_path}includes/common.{$phpex}");
+    $mode = strtolower(str_replace(' ','_',$mode));
     $has_subs = false;
     //check if file exists in root directory for main modules
     if (file_exists("{$root_path}{$mode}.{$phpex}"))
@@ -43,6 +44,10 @@ else
         {
             $template_file = "{$mode}.html";
         }
+        else if (file_exists($config->template_dir . '/' . $config->config['site_theme'] . '/template/' . $mode . '/index.html'))
+        {
+            $template_file = "{$mode}/index.html";
+        }
         else
         {
             $template_file = "viewpage.html";
@@ -52,7 +57,7 @@ else
         $page = $db->fetchrow($result);
         if (!isset($page['page_title']))
         {
-            $template_file = "user_message.html";
+            $template_file = "user/message.html";
             $template->assign_vars(array(
                  'PAGE_TITLE' => $page['page_title'],
                  'MESSAGE' => 'The page you are trying to find does not exist, or the module is not loaded.'

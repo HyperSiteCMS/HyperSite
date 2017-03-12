@@ -27,7 +27,7 @@ if ($user->user_info['logged_in'] == 1)
             break;
         case 'logout':
             $session = $db->clean($_COOKIE['hs_user_sess']);
-            $template_file = "user_message.html";
+            $template_file = "user/message.html";
             if ($user->user_logout($session))
             {
                 setcookie('hs_user_sess', '', time()-3600, '/');
@@ -58,7 +58,7 @@ else
                 $submitted_password = request_var('password', false);
                 if (!$submitted_username || !$submitted_password)
                 {
-                    $template_file = "user_login.html";
+                    $template_file = "user/login.html";
                     $template->assign_var('ERROR', 1);
                     $template->assign_var('MESSAGE', 'Error: Username or Password not supplied.');
                     break;
@@ -75,13 +75,13 @@ else
                     $query = $db->build_query('insert', SESSION_TABLE, $session_info);
                     if ($db->query($query))
                     {
-                        $template_file = "user_message.html";
+                        $template_file = "user/message.html";
                         $template->assign_var('ERROR', 0);
                         $template->assign_var('MESSAGE', 'Success. User Logged in');
                     }
                     else
                     {
-                        $template_file = "user_message.html";
+                        $template_file = "user/message.html";
                         $template->assign_var('ERROR', 1);
                         $template->assign_var('MESSAGE', 'Error: Unable to save session information');
                         setcookie('hs_user_sess', '', time()-3600,'/');
@@ -100,14 +100,14 @@ else
                 }
                 else
                 {
-                    $template_file = "user_login.html";
+                    $template_file = "user/login.html";
                     $template->assign_var('ERROR', 1);
                     $template->assign_var('MESSAGE', 'Error: Incorrect Username/Password combination');
                 }
             }
             else
             {
-                $template_file = "user_login.html";
+                $template_file = "user/login.html";
             }
             break;
         case 'register':

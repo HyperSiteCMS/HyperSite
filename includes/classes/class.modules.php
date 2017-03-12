@@ -26,8 +26,10 @@ class modules {
         //First get all loaded Modules
         $query = "SELECT * FROM " . MODULE_TABLE;
         $module_array = $db->fetchall($db->query($query));
+        
         foreach ($module_array as $module)
         {
+            $module['mod_name'] = strtolower(str_replace(' ','_',$module['mod_name']));
             $mod_info_file = "{$root_path}modules/{$module['mod_name']}/{$module['mod_name']}.json";
             $file_contents = file_get_contents($mod_info_file);
             $mod_info = json_decode($file_contents, true);
@@ -74,17 +76,16 @@ class modules {
     {
         global $db, $root_path;
         if ($mod_name === '') { return false; }
-        $mod_name = $db->clean($mod_name);
+        $mod_name = str_replace('_',' ',$db->clean($mod_name));
         //Lets check if Module is actually loaded
         $sql = "SELECT * FROM " . MODULE_TABLE . " WHERE mod_name='{$mod_name}'";
         $row = $db->fetchrow($db->query($sql));
         if ($row) 
         {
+            $where = array('mod_name' => $mod_name);
+            $mod_name = strtolower(str_replace(' ','_',$mod_name));
             $this->do_actions('uninstall', $mod_name, $row['mod_install_file']);
             //Remove module from database
-            $where = array(
-                'mod_name' => $mod_name
-            );
             $result = $db->query($db->build_query('delete', MODULE_TABLE, false, $where));
             return $result;
         }

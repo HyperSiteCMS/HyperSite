@@ -97,7 +97,7 @@ class user
     function user_login($username, $password)
     {
         global $db;
-        $newpass = $this->hash_password($username, $password);
+        $newpass = $this->hash_password(strtolower($username), $password);
         $username = $db->clean($username);
         $query = "SELECT * FROM " . USERS_TABLE . " WHERE username='{$username}' AND password='{$newpass}'";
         $result = $db->query($query);

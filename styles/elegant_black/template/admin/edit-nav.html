@@ -1,0 +1,20 @@
+<!-- INCLUDE header.html -->
+<div class="block">
+    <h1>Adding Navigation Link</h1>
+    <form action="./admin/edit-nav/" method="POST">
+    <table width="100%">
+        <tr><td>Url Title:</td><td><input type="text" name="nav_title" value="{NAV_TITLE}"/></td></tr>
+        <tr><td>Url:</td><td><input type="text" name="nav_url" value="{NAV_URL}"/><td></tr>
+        <tr><td>Location:</td>
+            <td><select name="nav_area">
+                    <!-- BEGIN area_options -->
+                    {area_options.OP}
+                    <!-- END area_options -->
+                </select>
+             <input type="hidden" name="nav_id" value="{NAV_ID}" /></td>
+        </tr>
+        <tr><td colspan="2" align="center"><input type="submit" value="Submit" name="save"/></td></tr>
+    </table>
+    </form>
+</div>
+<!-- INCLUDE footer.html -->

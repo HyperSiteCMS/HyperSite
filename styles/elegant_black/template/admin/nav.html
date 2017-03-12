@@ -1,0 +1,24 @@
+<!-- INCLUDE header.html -->
+<!-- IF MESSAGE > 0 -->
+<div class="block">
+    <h1>Message</h1>
+    <p>{MSG_TEXT}</p>
+</div>
+<!-- ENDIF -->
+<div class="rightbutton"><a href="./admin/add-nav/" class="mainaction">Add Navigation</a></div>
+<div class="block">
+    <h1>Navigation Links</h1>
+    <table width="100%">
+        <tr><th>Title</th><th>Url</th><th>Location</th><th>Edit</th><th>Delete</th></tr>
+        <!-- BEGIN cur_nav -->
+        <tr>
+            <td>{cur_nav.TITLE}</td>
+            <td>{cur_nav.URL}</td>
+            <td>{cur_nav.AREA}</td>
+            <td><a href="./admin/edit-nav/{cur_nav.ID}/">Edit</a></td>
+            <td><a href="./admin/del-nav/{cur_nav.ID}/">Delete</a></td>
+        </tr>
+        <!-- END cur_nav -->
+    </table>
+</div>
+<!-- INCLUDE footer.html -->

@@ -20,7 +20,7 @@ if (!defined('IN_ACP'))
     exit;
 }
 /* Main Code here */
-$template_file = "admin_message.html";
+$template_file = "admin/message.html";
 $template->assign_vars(array(
    'MESSAGE' => "Test module is working ok.",
     'PAGE_TITLE' => 'Test Mod'
