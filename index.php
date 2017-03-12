@@ -23,7 +23,7 @@ if (file_exists('install.'.$phpex))
 else
 {
     require("{$root_path}includes/common.{$phpex}");
-
+    $has_subs = false;
     //check if file exists in root directory for main modules
     if (file_exists("{$root_path}{$mode}.{$phpex}"))
     {
@@ -64,26 +64,7 @@ else
                  'PAGE_TEXT' => html_entity_decode($page['page_text'])
             ));
         }
-    }
-    $has_subs = false;
-    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_id']}";
-    $result = $db->query($query);
-    $subpages = $db->fetchall($result);
-    if (count($subpages) > 0)
-    {
-        $has_subs = true;
-        foreach ($subpages as $sub)
-        {
-            $template->assign_block_vars('subpages', array(
-                'LINK' => $sub['page_identifier'],
-                'TITLE' => $sub['page_title']
-            ));
-        }
-    }
-    //If current page is a sub-page, find other sub-pages with same parent
-    if ($page['page_parent'] > 0)
-    {
-        $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_parent']}";
+        $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_id']}";
         $result = $db->query($query);
         $subpages = $db->fetchall($result);
         if (count($subpages) > 0)
@@ -97,9 +78,27 @@ else
                 ));
             }
         }
+        //If current page is a sub-page, find other sub-pages with same parent
+        if ($page['page_parent'] > 0)
+        {
+            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_parent']}";
+            $result = $db->query($query);
+            $subpages = $db->fetchall($result);
+            if (count($subpages) > 0)
+            {
+                $has_subs = true;
+                foreach ($subpages as $sub)
+                {
+                    $template->assign_block_vars('subpages', array(
+                        'LINK' => $sub['page_identifier'],
+                        'TITLE' => $sub['page_title']
+                    ));
+                }
+            }
+        }
     }
-    $template->assign_var('HAS_SUBPAGES', $has_subs);
 }
+$template->assign_var('HAS_SUBPAGES', $has_subs);
 $template->set_filenames(array(
     'body' => $template_file
 ));

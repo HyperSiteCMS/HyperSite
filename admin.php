@@ -212,6 +212,24 @@ else
                     $template_file = "admin_message.html";
                 }
                 break;
+            case 'users':
+                break;
+            case 'edit-user':
+                break;
+            case 'del-user':
+                break;
+            case 'ban-user':
+                break;
+            case 'nav':
+                break;
+            case 'del-nav':
+                break;
+            case 'edit-nav':
+                break;
+            case 'add-nav':
+                break;
+            case 'settings':
+                break;
             default:
                 $template_file = "admin.html";
                 $template->assign_vars(array(
