@@ -223,6 +223,21 @@ else
                 break;
             case 'ban-user':
                 break;
+            case 'themes':
+                $template_file = "admin/themes.html";
+                $files = array_slice(scandir("{$root_path}{$config->template_dir}"), 2);
+                foreach ($files as $file)
+                {
+                    if (is_dir($root_path . $config->template_dir . '/' . $file))
+                    {
+                        $info = json_decode(file_get_contents($root_path . $config->template_dir . '/' . $file . '/info.json'), true);
+                        $template->assign_block_vars('themes', array(
+                            'NAME' => $info['name'],
+                            'AUTHOR' => $info['author']
+                        ));
+                    }
+                }
+                break;
             case 'nav':
                 $template_file = "admin/nav.html";
                 $query = "SELECT * FROM " . NAV_TABLE;

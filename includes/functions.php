@@ -79,21 +79,24 @@ function generate_parent_select($current_parent = 0)
     }
     function generate_theme_select($current = 'elegant_black')
     {
-        global $config;
+        global $config, $root_path;
         $return = "<select name=\"theme\">";
         $files = array_slice(scandir("{$root_path}{$config->template_dir}"), 2);
         foreach ($files as $file)
         {
-            if (is_dir($root_path . $config->template_dir . $file))
+            if (is_dir($root_path . $config->template_dir . '/' . $file))
             {
+                $info = json_decode(file_get_contents($root_path . $config->template_dir . '/' . $file . '/info.json'), true);
                 if ($file == $current)
                 {
-                    $return .= "<option value=\"{$file}\" selected=\"selected\">" . ecwords(str_replace('_', ' ', $file)) . "</option>";
+                    $return .= "<option value=\"{$file}\" selected=\"selected\">" . $info['name'] . "</option>";
                 }
                 else
                 {
-                    $return .= "<option value=\"{$file}\">" . ecwords(str_replace('_', ' ', $file)) . "</option>";
+                    $return .= "<option value=\"{$file}\">" . $info['name'] . "</option>";
                 }
             }
         }
+        $return .= "</select>";
+        return $return;
     }

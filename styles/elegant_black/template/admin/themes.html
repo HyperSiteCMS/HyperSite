@@ -1,0 +1,14 @@
+<!-- INCLUDE header.html -->
+<!-- IF MESSAGE > 0 -->
+<div class="block"><h1>Message</h1><p>{MSG_TEXT}</p></div>
+<!-- ENDIF -->
+<div class="block">
+    <h1>Themes Available</h1>
+    <table width="100%">
+        <tr><th>Theme Name</th><th>Author</th></tr>
+        <!-- BEGIN themes -->
+        <tr><td>{themes.NAME}</td><td>{themes.AUTHOR}</td></tr>
+        <!-- END themes -->
+    </table>
+</div>
+<!-- INCLUDE footer.html -->
