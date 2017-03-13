@@ -1,0 +1,34 @@
+<!-- INCLUDE header.html -->
+<div class="block">
+    <h1>Site Settings</h1>
+    <form action="./admin/settings/" method="POST">
+        <fieldset><label>Site Settings</label>
+            <table width="100%">
+                <tr><td>Site Title</td><td><input type="text" name="site_title" value="{TITLE}" /></td></tr>
+                <tr><td>Site Description</td><td><input type="text" name="site_desc" value="{DESC}" /></td></tr>
+                <tr><td>Allow Users</td><td><input type="radio" name="allow_users" value="0"/>No <input type="radio" name="allow_users" value="1"/>Yes</td></tr>
+            </table></fieldset>
+        <fieldset><label>Display Settings</label>
+            <table width="100%">
+                <tr><td>Theme</td><td>{THEME_SELECT}</td></tr>
+                <tr><td>Use Tiny MCE</td><td><input type="radio" name="use_tiny_mce" value="0"/>No <input type="radio" name="use_tiny_mce" value="1"/>Yes</td></tr>
+                <tr><td>Tiny MCE Api</td><td><input type="text" name="tiny_mc_api" value="{TINY_MCE_API}"/></td></tr>
+                <tr><td>Site Intro</td><td><textarea id="textareas" name="site_intro">{SITE_INTRO}</textarea></td></tr>
+            </table>
+        </fieldset>
+        <fieldset><label>Other Settings</label>
+            <table width="100%">
+        <!-- BEGIN settings -->
+        <tr><td>{settings.VIEW_NAME}</td>
+            <td><input type="text" name="{settings.NAME}" value="{settings.VALUE}"/></td>
+        </tr>
+        <!-- END settings -->
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" name="save" value="Save" class="mainaction"/>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<!-- INCLUDE footer.html -->

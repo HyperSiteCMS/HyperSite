@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `hs_users` (
   `user_email` varchar(500) NOT NULL,
   `date_registered` int(11) NOT NULL,
   `user_founder` int(1) NOT NULL DEFAULT '0',
+  `user_status` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 CREATE TABLE IF NOT EXISTS `hs_user_levels` (

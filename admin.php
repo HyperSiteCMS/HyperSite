@@ -362,6 +362,57 @@ else
                 }
             break;
             case 'settings':
+                $template->assign_var('PAGE_TITLE', 'Site Settings');
+                if (!isset($_POST['save']))
+                    {
+                    $template_file = "admin/settings.html";
+                    $sql = "SELECT * FROM " . SETTINGS_TABLE . " ORDER BY setting_id ASC";
+                    $all_settings = $db->fetchall($db->query($sql));
+                    foreach ($all_settings as $setting)
+                    {
+                        $array[$setting['setting_name']] = $setting['setting_value'];
+                    }
+                    $template->assign_vars(array(
+                        'SITE_INTRO' => html_entity_decode($array['site_intro']),
+                        'TITLE' => $array['site_title'],
+                        'DESC' => $array['site_desc'],
+                        'ALLOW_USERS' => $array['allow_users'],
+                        'THEME' => $array['site_theme'],
+                        'THEME_SELECT' => generate_theme_select($array['site_theme']),
+                        'TINY_MCE_API' => $array['tiny_mce_api'],
+                        'USE_TINYMCE' => $array['use_tiny_mce']
+                    ));
+                    for ($x = 8; isset($all_settings[$x]); $x++)
+                    {
+                        $template->assign_block_vars('settings', array(
+                            'NAME' => $all_settings[$x]['setting_name'],
+                            'VALUE' => $all_settings[$x]['setting_value'],
+                            'VIEW_NAME' => str_replace('_',' ',ucwords($all_settings[$x]['setting_name']))
+                        ));
+                    }
+                }
+                else
+                {
+                    $post_array = $_POST;
+                    $post = array();
+                    foreach ($post_array as $key => $val)
+                    {
+                        if ($key != 'save')
+                        {
+                            $where = array('setting_name' => $key);
+                            $what = array('setting_value' => $db->clean($val));
+                            if ($key == 'site_intro')
+                            {
+                                $val = htmlentities($db->clean($val));
+                                $what = array('setting_value' => $val);
+                            }
+                            $sql = $db->build_query('update', SETTINGS_TABLE, $what, $where);
+                            $db->query($sql) or die('Failed to update settings');
+                        }
+                    }
+                    $template_file = "admin/message.html";
+                    $template->assign_var('MESSAGE', 'Site Settings Updated');
+                }
                 break;
             case 'pages':
                 $template_file = "admin/pages.html";
