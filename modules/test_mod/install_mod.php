@@ -10,10 +10,10 @@
  */
 
  /* Check if we are in CMS otherwise exit code. */
-/*if (!defined('IN_HSCMS'))
+if (!defined('IN_HSCMS'))
 {
 	exit;
-}*/
+}
 
 /* Main Code here */
 /*

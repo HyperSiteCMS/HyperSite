@@ -216,15 +216,120 @@ else
                 }
                 break;
             case 'users':
+                $template_file = "admin/users.html";
+                $template->assign_var('PAGE_TITLE', 'User Management');
+                $template->assign_var('MESSAGE', 0);
+                $sql = "SELECT * FROM " . USERS_TABLE;
+                $all = $db->fetchall($db->query($sql));
+                $template->assign_var('TOTAL_USERS', count($all));
                 break;
             case 'edit-user':
+                if (!isset($_POST['save']))
+                {
+                    $template_file = "admin/edituser.html";
+                    $template->assign_var('PAGE_TITLE', 'Edit User');
+                    $id = $db->clean($i);
+                    $sql = "SELECT * FROM " . USERS_TABLE . " WHERE user_id={$id}";
+                    $row = $db->fetchrow($db->query($sql));
+                    if ($row['user_founder'] > 0 && $user->user_info['user_founder'] < 1)
+                    {
+                        $template_file = "admin/users.html";
+                        $template->assign_var('PAGE_TITLE', 'User Management');
+                        $template->assign_vars(array(
+                            'MESSAGE' => 1,
+                            'MSG_TEXT' => 'Non-Founders may not edit founder accounts!'
+                        ));
+                        $sql = "SELECT * FROM " . USERS_TABLE;
+                        $all = $db->fetchall($db->query($sql));
+                        $template->assign_var('TOTAL_USERS', count($all));
+                        break;
+                    }
+                    else
+                    {
+                        foreach ($row as $key => $val)
+                        {
+                            $template->assign_var(strtoupper($key), $val);
+                        }
+                    }
+                }
+                else
+                {
+                    $sql = "SELECT * FROM " . USERS_TABLE;
+                    $all = $db->fetchall($db->query($sql));
+                    $template->assign_var('TOTAL_USERS', count($all));
+                    
+                }
                 break;
             case 'del-user':
+                $id = $db->clean($i);
+                $sql = $db->build_query('delete', USERS_TABLE, false, array('user_id' => $id));
+                if (!$db->query($sql))
+                {
+                    $template->assign_var('MESSAGE', 1);
+                    $template->assign_var('MSG_TEXT', 'Error. Failed to update database.<br/>' . $db->error_msg);
+                }
+                else
+                {
+                    $template->assign_var('MESSAGE', 1);
+                    $template->assign_var('MSG_TEXT', 'User deleted Successfully');
+                }
+                $template_file = "admin/users.html";
+                $template->assign_var('PAGE_TITLE', 'User Management');
+                $sql = "SELECT * FROM " . USERS_TABLE;
+                $all = $db->fetchall($db->query($sql));
+                $template->assign_var('TOTAL_USERS', count($all));
                 break;
             case 'ban-user':
+                $id = $db->clean($i);
+                $assoc_array = array(
+                   'user_status' => 0,
+                    'user_level' => 1
+                );
+                $where = array('user_id' => $id);
+                $sql = $db->build_query('UPDATE', USERS_TABLE, $assoc_array, $where);
+                if (!$db->query($sql))
+                {
+                    $template->assign_var('MESSAGE', 1);
+                    $template->assign_var('MSG_TEXT', 'Error. Failed to update database.<br/>' . $db->error_msg);
+                }
+                else
+                {
+                    $template->assign_var('MESSAGE', 1);
+                    $template->assign_var('MSG_TEXT', 'User successfully updated (Suspension)');
+                }
+                $template_file = "admin/users.html";
+                $template->assign_var('PAGE_TITLE', 'User Management');
+                $sql = "SELECT * FROM " . USERS_TABLE;
+                $all = $db->fetchall($db->query($sql));
+                $template->assign_var('TOTAL_USERS', count($all));
+                break;
+            case 'unban-user':
+                $id = $db->clean($i);
+                $assoc_array = array(
+                   'user_status' => 1,
+                    'user_level' => 1
+                );
+                $where = array('user_id' => $id);
+                $sql = $db->build_query('UPDATE', USERS_TABLE, $assoc_array, $where);
+                if (!$db->query($sql))
+                {
+                    $template->assign_var('MESSAGE', 1);
+                    $template->assign_var('MSG_TEXT', 'Error. Failed to update database.<br/>' . $db->error_msg);
+                }
+                else
+                {
+                    $template->assign_var('MESSAGE', 1);
+                    $template->assign_var('MSG_TEXT', 'User successfully updated (Un-Suspension)');
+                }
+                $template_file = "admin/users.html";
+                $template->assign_var('PAGE_TITLE', 'User Management');
+                $sql = "SELECT * FROM " . USERS_TABLE;
+                $all = $db->fetchall($db->query($sql));
+                $template->assign_var('TOTAL_USERS', count($all));
                 break;
             case 'themes':
                 $template_file = "admin/themes.html";
+                $template->assign_var('PAGE_TITLE', 'Themes');
                 $files = array_slice(scandir("{$root_path}{$config->template_dir}"), 2);
                 foreach ($files as $file)
                 {

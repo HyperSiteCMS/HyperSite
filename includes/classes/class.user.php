@@ -18,7 +18,7 @@ if (!defined('IN_HSCMS'))
 /* Main Code here */
 class user
 {
-    var $user_info = array();
+    public $user_info = array();
     
     function __construct() {
         $this->user_info = array(
@@ -28,6 +28,7 @@ class user
             'user_email' => '',
             'logged_in' => 0,
             'date_registered' => 0,
+            'user_founder' => 0,
             'permissions' => array(
                 'is_admin' => 0,
                 'can_mod_pages' => 0,

@@ -17,8 +17,7 @@ if (!defined('IN_HSCMS'))
 
 /* Main Code here */
 class modules {
-    var $loaded = array();
-    var $unloaded = array();
+    public $loaded, $unloaded = array();
     
     function __construct()
     {

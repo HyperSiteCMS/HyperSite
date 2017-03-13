@@ -18,14 +18,9 @@ if (!defined('IN_HSCMS'))
 /* Main Code here */
 class dbal
 {
-    var $connection;
-    var $query_result;
-    var $persistency = false;
-    var $user = '';
-    var $server = '';
-    var $dbname = '';
-    var $error = false;
-    var $error_msg;
+    public $connection, $query_result, $error_msg;
+    public $persistency, $error = false;
+    public $user, $server, $dbname = '';
     
     function __construct($host = 'localhost', $user = '', $pass = '', $dbname = null, $port = 3306, $persistency = false)
     {

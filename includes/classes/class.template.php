@@ -16,19 +16,12 @@ class template
 	* if it's a root-level variable, it'll be like this:
 	* --> $this->_tpldata[.][0][varname] == value
 	*/
-	var $_tpldata = array('.' => array(0 => array()));
-	var $_rootref;
+	public $_tpldata = array('.' => array(0 => array()));
+	public $_rootref, $orig_tpl_storedb, $orig_tpl_inherits_id;
 
 	// Root dir and hash of filenames for each template handle.
-	var $root = '';
-	var $cachepath = '';
-	var $files = array();
-	var $filename = array();
-	var $files_inherit = array();
-	var $files_template = array();
-	var $inherit_root = '';
-	var $orig_tpl_storedb;
-	var $orig_tpl_inherits_id;
+	public $root, $cachepath, $inherit_root = '';
+	public $files, $filename, $files_inherit, $files_template = array();
 
 	// this will hash handle names to the compiled/uncompiled code for that handle.
 	var $compiled_code = array();
