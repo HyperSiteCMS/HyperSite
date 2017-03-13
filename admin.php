@@ -60,7 +60,7 @@ else
                 $template->assign_var('PAGE_TITLE', 'ACP: New Page');
                 if (!isset($_POST['save']))
                 {
-                    $template_file = "admin_newpage.html";
+                    $template_file = "admin/newpage.html";
                     $parent_select = generate_parent_select(0);
                     $template->assign_vars(array(
                       'PARENT_SELECT' => $parent_select,
