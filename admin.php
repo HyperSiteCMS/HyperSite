@@ -226,12 +226,25 @@ else
             case 'edit-user':
                 if (!isset($_POST['save']))
                 {
-                    $template_file = "admin/edituser.html";
+                    $template_file = "admin/edit-user.html";
                     $template->assign_var('PAGE_TITLE', 'Edit User');
-                    $id = $db->clean($i);
-                    $sql = "SELECT * FROM " . USERS_TABLE . " WHERE user_id={$id}";
+                    $id = $db->clean(request_var('username', null));
+                    $sql = "SELECT * FROM " . USERS_TABLE . " WHERE username='{$id}'";
                     $row = $db->fetchrow($db->query($sql));
-                    if ($row['user_founder'] > 0 && $user->user_info['user_founder'] < 1)
+                    if (!isset($row['user_id']))
+                    {
+                        $template_file = "admin/users.html";
+                        $template->assign_var('PAGE_TITLE', 'User Management');
+                        $template->assign_vars(array(
+                            'MESSAGE' => 1,
+                            'MSG_TEXT' => 'No user found with that Username!'
+                        ));
+                        $sql = "SELECT * FROM " . USERS_TABLE;
+                        $all = $db->fetchall($db->query($sql));
+                        $template->assign_var('TOTAL_USERS', count($all));
+                        break;
+                    }
+                    else if ($row['user_founder'] > 0 && $user->user_info['user_founder'] < 1)
                     {
                         $template_file = "admin/users.html";
                         $template->assign_var('PAGE_TITLE', 'User Management');
@@ -257,7 +270,35 @@ else
                     $sql = "SELECT * FROM " . USERS_TABLE;
                     $all = $db->fetchall($db->query($sql));
                     $template->assign_var('TOTAL_USERS', count($all));
-                    
+                    $template->assign_var('PAGE_TITLE', 'User Management');
+                    foreach ($_POST as $key => $val)
+                    {
+                        if ($key != 'save')
+                        {
+                            $post[$key] = $db->clean(request_var($key, null));
+                        }
+                    }
+                    if ($post['password'] == "")
+                    {
+                        $post['password'] = $post['cur_pass'];
+                    }
+                    else
+                    {
+                        $post['password'] = $user->hash_password($post['username'], $post['password']);
+                    }
+                    unset($post['cur_pass']);
+                    $where = array('user_id' => $post['user_id']);
+                    $sql = $db->build_query('update', USERS_TABLE, $post, $where);
+                    $template->assign_var('MESSAGE', 1);
+                    if (!$db->query($sql))
+                    {
+                        $template->assign_var('MSG_TEXT', 'Error. Failed to update database:<br/>' . $db->error_msg);
+                    }
+                    else
+                    {
+                        $template->assign_var('MSG_TEXT', 'User updated successfully');
+                    }
+                    $template_file = "admin/users.html";
                 }
                 break;
             case 'del-user':

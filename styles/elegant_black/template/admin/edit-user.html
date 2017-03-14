@@ -1,0 +1,19 @@
+<!-- INCLUDE header.html -->
+<div class="block">
+    <h1>Editing User</h1>
+    &nbsp;<b>User Information</b>
+    <fieldset>
+        <form action="./admin/edit-user/" method="POST"/>
+        <input type="hidden" name="user_id" value="{USER_ID}"/>
+        <b>Username:</b> {USERNAME}<br/>
+        <b>New Password:</b> <input type="password" name="password" value=""/><br/>
+        <input type="hidden" name="cur_pass" value="{PASSWORD}" />
+        <b>Email:</b> <input type="text" name="user_email" value="{USER_EMAIL}"/><br/>
+        <b>Level:</b> <select name="user_level"><option value="1">User</option><option value="2">Moderator</option><option value="3">Administrator</option></select><br/>
+        <b>Founder:</b> <select name="user_founder"><option value="0">No</option><option value="1">Yes</option></select><br/>
+        <input type="submit" class="mainaction" value="Save" name="save"/>
+    </form>
+    </fieldset>
+
+</div>
+<!-- INCLUDE footer.html -->

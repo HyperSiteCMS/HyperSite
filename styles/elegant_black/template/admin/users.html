@@ -1,0 +1,18 @@
+<!-- INCLUDE header.html -->
+<!-- IF MESSAGE > 0 -->
+<div class="block">
+    <h1>Message</h1><p>{MSG_TEXT}</p>
+</div>
+<!-- ENDIF -->
+<div class="block">
+    <h1>{PAGE_TITLE}</h1>
+    <p>Welcome to your user management</p>
+    <p>You currently have <strong>{TOTAL_USERS}</strong> users registered.</p>
+    <fieldset><label><b>User Search</b></label>
+        <form action="./admin/edit-user/" method="POST">
+            <b>Username:</b> <input type="text" name="username"/> <input type="submit" value="Search" name="submit"/>
+        </form>
+    </fieldset>
+    <br/>
+</div>
+<!-- INCLUDE footer.html -->
