@@ -14,6 +14,18 @@
         <input type="submit" class="mainaction" value="Save" name="save"/>
     </form>
     </fieldset>
-
+    &nbsp;<b>Actions</b>
+    <fieldset>
+        <!-- IF USER_FOUNDER < 1 -->
+        <a class="subaction" href="./admin/del-user/{USER_ID}/">Delete {USERNAME}</a> 
+        <a href="./admin/ban-user/{USER_ID}/" class="subaction">Ban {USERNAME}</a> 
+        <a href="./admin/unban-user/{USER_ID}/" class="subaction">Unban {USERNAME}</a>
+        <!-- ELSE -->
+        <a class="subaction">Delete {USERNAME}</a> 
+        <a class="subaction">Ban {USERNAME}</a> 
+        <a class="subaction">Unban {USERNAME}</a>
+        <!-- ENDIF -->
+        <br /><span>Note: Founder accounts cannot be deleted or banned.</span>
+    </fieldset>
 </div>
 <!-- INCLUDE footer.html -->

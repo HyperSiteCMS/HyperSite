@@ -65,11 +65,11 @@ if (isset($_COOKIE['hs_user_sess']) && (!isset($_POST['login'])))
 }
 $modules = new modules();
 $template = new template($config->template_dir . '/' . $config->config['site_theme'] . '/template/','default');
-$mode = request_var('mode', 'home');
+$mode = $db->clean(request_var('mode', 'home'));
 //Override mode if mode=index to stop a continuous loop
 $mode = (($mode == 'index') ? 'home' : $mode);
-$act = request_var('act', null);
-$i = request_var('i', null);
+$act = $db->clean(request_var('act', null));
+$i = $db->clean(request_var('i', null));
 
 //Load some sitewide variables into the template :)
 $template->assign_vars(array(

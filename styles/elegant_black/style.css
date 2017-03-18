@@ -184,7 +184,7 @@ blockquote h9 {font-size: 0.8em; font-weight: bold;}
     text-align: right; 
     margin-top: 20px;
 }
-a.mainaction {
+.mainaction {
     background: #000;  
     color:#fff; 
     font-weight:400; 
@@ -193,11 +193,11 @@ a.mainaction {
     padding:2px 7px 2px 7px; 
     width:120px;
 }
-a.mainaction:hover {
+.mainaction:hover {
     color: #bcbcbc;
     text-decoration: none;
 }
-a.subaction {
+.subaction {
     background: #000; 
     color:#fff; 
     font-weight:400; 
@@ -206,7 +206,7 @@ a.subaction {
     padding:2px 4px 2px 4px; 
     width:120px;
 }
-a.subaction:hover {
+.subaction:hover {
     color: #bcbcbc;
     text-decoration: none;
 }
