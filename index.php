@@ -23,6 +23,7 @@ if (file_exists('install.'.$phpex))
 else
 {
     require("{$root_path}includes/common.{$phpex}");
+    $template->assign_var('MODULE_SUBLINKS', 0);
     $mode = strtolower(str_replace(' ','_',$mode));
     $has_subs = false;
     //check if file exists in root directory for main modules
