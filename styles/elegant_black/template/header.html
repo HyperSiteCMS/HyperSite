@@ -8,21 +8,12 @@
         <base href="http://{SERVER_NAME}" />
         <link rel="stylesheet" type="text/css" href="./styles/{SITE_THEME}/style.css" media="all"/>
         <title>{SITE_TITLE} &bull; {PAGE_TITLE}</title>
-        <script src="http://cloud.tinymce.com/stable/tinymce.min.js?apiKey={TINY_MCE_API}"></script>
+        <script type="text/javascript" src="https://cdn.ckeditor.com/4.6.2/full/ckeditor.js"></script>
         <script>
-  tinymce.init({
-    selector: '#textareas',
-    menubar: false,
-    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons',
-    width: 600, height:300,
-    plugins: [
-  'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-  'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-  'save table contextmenu directionality emoticons template paste textcolor'
-],
-
-  });
-  </script>
+            window.onload = function() {
+                CKEDITOR.replaceAll();
+            };
+        </script>
     </head>
     <body>
         <div id="wrap">
