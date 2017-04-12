@@ -35,6 +35,7 @@ else
             'TITLE' => $amod['mod_name']
         ));
     }
+    //Now check if we are getting admin for a module, but also check if said module has been loaded.
     $module = request_var('mod', null);
     if (($module != null) && file_exists("{$root_path}/modules/{$module}/admin_{$module}.{$phpex}"))
     {
@@ -54,8 +55,10 @@ else
     }
     else
     {
+        //Now all the default admin actions.
         switch ($act)
         {
+            //Page management
             case 'addpage':
                 $template->assign_var('PAGE_TITLE', 'ACP: New Page');
                 if (!isset($_POST['save']))
@@ -150,6 +153,24 @@ else
                 }
                 $template_file = "admin/message.html";
                 break;
+            case 'pages':
+                $template_file = "admin/pages.html";
+                $template->assign_vars(array(
+                   'PAGE_TITLE' => "Page Management",
+                ));
+                $query = "SELECT * FROM " . PAGES_TABLE;
+                $result = $db->query($query);
+                $pages = $db->fetchall($result);
+                foreach ($pages as $page)
+                {
+                    $template->assign_block_vars('pages', array(
+                        'TITLE' => $page['page_title'],
+                        'ID' => $page['page_id'],
+                        'IDENTIFIER' => $page['page_identifier']
+                    )); 
+                }
+                break;
+            //Module Management
             case 'modules':
                 foreach ($modules->loaded as $loaded_mod)
                 {
@@ -215,6 +236,7 @@ else
                     $template_file = "admin/message.html";
                 }
                 break;
+            //User Management
             case 'users':
                 $template_file = "admin/users.html";
                 $template->assign_var('PAGE_TITLE', 'User Management');
@@ -368,6 +390,7 @@ else
                 $all = $db->fetchall($db->query($sql));
                 $template->assign_var('TOTAL_USERS', count($all));
                 break;
+            //Everything Else
             case 'themes':
                 $template_file = "admin/themes.html";
                 $template->assign_var('PAGE_TITLE', 'Themes');
@@ -573,23 +596,6 @@ else
                     }
                     $template_file = "admin/message.html";
                     $template->assign_var('MESSAGE', 'Site Settings Updated');
-                }
-                break;
-            case 'pages':
-                $template_file = "admin/pages.html";
-                $template->assign_vars(array(
-                   'PAGE_TITLE' => "Page Management",
-                ));
-                $query = "SELECT * FROM " . PAGES_TABLE;
-                $result = $db->query($query);
-                $pages = $db->fetchall($result);
-                foreach ($pages as $page)
-                {
-                    $template->assign_block_vars('pages', array(
-                        'TITLE' => $page['page_title'],
-                        'ID' => $page['page_id'],
-                        'IDENTIFIER' => $page['page_identifier']
-                    )); 
                 }
                 break;
             default:

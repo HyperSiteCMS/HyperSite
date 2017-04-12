@@ -111,6 +111,33 @@ else
             }
             break;
         case 'register':
+            if (isset($_POST['submit']))
+            {
+                $email = request_var('email', null);
+                $email_ver = request_var('email-verify', null);
+                $password = request_var('password', null);
+                $pass_ver = request_var('pass-verify', null);
+                $uername = request_var('username');
+                //Verification Checks
+                $error = false;
+                $errors = array();
+                if ($email != $email_ver)
+                {
+                    $error = true;
+                    $errors[] = "Email addresses do not match";
+                }
+                if ($password !== $password_ver)
+                {
+                    $error = true;
+                    $errors[] = "Passwords do not match";
+                }
+            }
+            else
+            {
+                $template_file = "user/register.html";
+            }
+            break;
+        case 'verify':
             break;
     }
 }
