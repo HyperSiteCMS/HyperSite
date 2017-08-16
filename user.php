@@ -117,7 +117,7 @@ else
                 $email_ver = request_var('email-verify', null);
                 $password = request_var('password', null);
                 $pass_ver = request_var('pass-verify', null);
-                $uername = request_var('username');
+                $username = request_var('username');
                 //Verification Checks
                 $error = false;
                 $errors = array();
@@ -126,10 +126,35 @@ else
                     $error = true;
                     $errors[] = "Email addresses do not match";
                 }
+                
                 if ($password !== $password_ver)
                 {
                     $error = true;
                     $errors[] = "Passwords do not match";
+                }
+                if ($user->get_user('username', $username))
+                {
+                    $error = true;
+                    $errors[] = "Username is already taken";
+                }
+                if ($error == true)
+                {
+                    $template_file = "user/register.html";
+                    $template->assign_block_vars('errors', $errors);
+                }
+                else
+                {
+                    $usr_ary = array(
+                        'username' => $username,
+                        'email' => $email,
+                        'password' => $password,
+                        'user_level' => 1,
+                        'date_registered' => time(),
+                        'user_founder' => 0
+                    );
+                    $newuser = $user->create_user($user_array);
+                    $template_file = "user/message.html";
+                    $template->assign_var('Message', 'You have registered successfully. You may now login.');
                 }
             }
             else

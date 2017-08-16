@@ -390,6 +390,41 @@ else
                 $all = $db->fetchall($db->query($sql));
                 $template->assign_var('TOTAL_USERS', count($all));
                 break;
+            case 'add-user':
+                if (!isset($_POST['save']))
+                {
+                    $template_file = "admin/add-user.html";
+                    $template->assign_var('PAGE_TITLE', 'Add User');
+                }
+                else
+                {
+                    $sql = "SELECT * FROM " . USERS_TABLE;
+                    $all = $db->fetchall($db->query($sql));
+                    $template->assign_var('TOTAL_USERS', count($all));
+                    $template->assign_var('PAGE_TITLE', 'User Management');
+                    foreach ($_POST as $key => $val)
+                    {
+                        if ($key != 'save')
+                        {
+                            $post[$key] = $db->clean(request_var($key, null));
+                            $user_array[$key] = $post[$key];
+                        }
+                    }
+                    $post['password'] = $user->hash_password($post['username'], $post['password']);
+                    $user_array['password'] = $post['password'];
+                    $newuser = $user->create_user($user_array);
+                    $template->assign_var('MESSAGE', 1);
+                    if (!$db->query($sql))
+                    {
+                        $template->assign_var('MSG_TEXT', 'Error. Failed to update database:<br/>' . $db->error_msg);
+                    }
+                    else
+                    {
+                        $template->assign_var('MSG_TEXT', 'User Added successfully');
+                    }
+                    $template_file = "admin/users.html";
+                }
+                break;
             //Everything Else
             case 'themes':
                 $template_file = "admin/themes.html";
