@@ -82,28 +82,34 @@ class user
         $levels = $db->fetchrow($db->query("SELECT * FROM " . LEVELS_TABLE . " WHERE level_id={$user_row['user_level']}"));
         return $levels;
     }
-    function hash_password($username, $password)
+    function hash_password($password)
     {
-        global $config;
-        $key_len = floor(strlen($username)/2);
-        $key1 = substr($username, 0, $key_len);
-        $key2 = substr($username, $key_len);
-        $salt_len = floor(strlen($config->config['password_salt'])/2);
-        $salt1 = substr($config->config['password_salt'], 0 , $salt_len);
-        $salt2 = substr($config->config['password_salt'], $salt_len);
-        $newpass = $key1.$salt2.$password.$salt1.$key2;
-        $hash_pass = sha1($newpass);
+        $hash_pass = password_hash($password, PASSWORD_DEFAULT);
         return $hash_pass;
     }
     function user_login($username, $password)
     {
         global $db;
-        $newpass = $this->hash_password(strtolower($username), $password);
-        $username = $db->clean($username);
-        $query = "SELECT * FROM " . USERS_TABLE . " WHERE username='{$username}' AND password='{$newpass}'";
+        //First get password hash from database
+        $query = "SELECT * FROM " . USERS_TABLE . " WHERE username='{$username}'";
         $result = $db->query($query);
         $info = $db->fetchrow($result);
-        return $info;
+        //Verify password match
+        if (password_verify($password, $info['password']))
+        {
+            //Now lets check if password hash needs updated
+            if (password_needs_rehash($info['password'], PASSWORD_DEFAULT))
+            {
+                $new_hash = password_hash($password, PASSWORD_DEFAULT);
+                $query = "UPDATE " . USERS_TABLE . " SET password='{$new_hash}' WHERE username='{$username}'";
+                $db->query($query);
+            } 
+            return $info;
+        }
+        else
+        {
+            return false;
+        }
     }
     function user_logout($session)
     {
@@ -114,7 +120,7 @@ class user
     function create_user($user_array)
     {
         global $db;
-        $user_array['password'] = $this->hash_password($user_array['username'], $user_array['password']);
+        $user_array['password'] = $this->hash_password($user_array['password']);
         $user_array['username'] = $db->clean($user_array['username']);
         $query = $db->build_query('insert', USERS_TABLE, $user_array);
         $result = $db->query($query);

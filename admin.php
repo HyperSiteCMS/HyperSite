@@ -302,11 +302,11 @@ else
                     }
                     if ($post['password'] == "")
                     {
-                        $post['password'] = $post['cur_pass'];
+                        unset($post['password']);
                     }
-                    else
+                    else 
                     {
-                        $post['password'] = $user->hash_password($post['username'], $post['password']);
+                        $post['password'] = $user->hash_password($post['password']);
                     }
                     unset($post['cur_pass']);
                     $where = array('user_id' => $post['user_id']);
@@ -409,8 +409,7 @@ else
                             $post[$key] = $db->clean(request_var($key, null));
                             $user_array[$key] = $post[$key];
                         }
-                    }
-                    $post['password'] = $user->hash_password($post['username'], $post['password']);
+                    };
                     $user_array['password'] = $post['password'];
                     $newuser = $user->create_user($user_array);
                     $template->assign_var('MESSAGE', 1);

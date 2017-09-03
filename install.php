@@ -96,7 +96,7 @@ switch ($stage)
         $query = "INSERT INTO " . SETTINGS_TABLE . "(`setting_name`,`setting_value`) VALUES ";
         $query .= "('site_title', '{$site_title}'), ('site_desc', '{$site_desc}'), ";
         $query .= "('site_intro', '{$intro}'), ('site_theme', 'elegant black'), ('allow_users', '0'), ";
-        $query .= "('password_salt', '" . $config->config['password_salt'] . "');";
+        $query .= ");";
         $result = $db->query($query);
         if (!$result)
         {
