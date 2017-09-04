@@ -46,7 +46,7 @@ if ($user->user_info['logged_in'] == 1)
             break;
     }
 }
-else 
+else if ($act != 'view')
 {
     switch ($act)
     {
@@ -66,36 +66,45 @@ else
                 $user_info = $user->user_login($submitted_username, $submitted_password);
                 if ($user_info)
                 {
-                    $sess_id = unique_id();
-                    setcookie('hs_user_sess', $sess_id, time()+(86400*30),'/'); //Set cookie for 30 days to auto login.
-                    $session_info = array(
-                        'user_id' => $user_info['user_id'],
-                        'uniq_id' => $sess_id
-                    );
-                    $query = $db->build_query('insert', SESSION_TABLE, $session_info);
-                    if ($db->query($query))
+                    $user_info['permissions'] = $user->get_permissions($user_info['user_id']);
+                    if (($config->config['allow_users'] < 1) && $user_info['permissions']['is_admin'] < 1)
                     {
                         $template_file = "user/message.html";
-                        $template->assign_var('ERROR', 0);
-                        $template->assign_var('MESSAGE', 'Success. User Logged in');
+                        $template->assign_var('MESSAGE', 'Only administrators may log in at the moment. Please check back later');
                     }
                     else
                     {
-                        $template_file = "user/message.html";
-                        $template->assign_var('ERROR', 1);
-                        $template->assign_var('MESSAGE', 'Error: Unable to save session information');
-                        setcookie('hs_user_sess', '', time()-3600,'/');
-                        break;
-                    }
-                    $userinfo = $user->get_user('session', $sess_id);
-                    if ($userinfo)
-                    {
-                        //Valid session so lets renew cookie and get info from database
-                        setcookie('hs_user_sess', $sess_id, time() + (86400*30),'/');
-                        $permissions = $user->get_permissions($userinfo['user_id']);
-                        $userinfo['permissions'] = $permissions;
-                        $userinfo['logged_in'] = 1;
-                        $user->user_info = $userinfo;
+                        $sess_id = unique_id();
+                        setcookie('hs_user_sess', $sess_id, time()+(86400*30),'/'); //Set cookie for 30 days to auto login.
+                        $session_info = array(
+                            'user_id' => $user_info['user_id'],
+                            'uniq_id' => $sess_id
+                        );
+                        $query = $db->build_query('insert', SESSION_TABLE, $session_info);
+                        if ($db->query($query))
+                        {
+                            $template_file = "user/message.html";
+                            $template->assign_var('ERROR', 0);
+                            $template->assign_var('MESSAGE', 'Success. User Logged in');
+                        }
+                        else
+                        {
+                            $template_file = "user/message.html";
+                            $template->assign_var('ERROR', 1);
+                            $template->assign_var('MESSAGE', 'Error: Unable to save session information');
+                            setcookie('hs_user_sess', '', time()-3600,'/');
+                            break;
+                        }
+                        $userinfo = $user->get_user('session', $sess_id);
+                        if ($userinfo)
+                        {
+                            //Valid session so lets renew cookie and get info from database
+                            setcookie('hs_user_sess', $sess_id, time() + (86400*30),'/');
+                            $permissions = $user->get_permissions($userinfo['user_id']);
+                            $userinfo['permissions'] = $permissions;
+                            $userinfo['logged_in'] = 1;
+                            $user->user_info = $userinfo;
+                        }
                     }
                 }
                 else
@@ -111,59 +120,71 @@ else
             }
             break;
         case 'register':
-            if (isset($_POST['submit']))
+            if ($config->config['allow_users'] < 1)
             {
-                $email = request_var('email', null);
-                $email_ver = request_var('email-verify', null);
-                $password = request_var('password', null);
-                $pass_ver = request_var('pass-verify', null);
-                $username = request_var('username');
-                //Verification Checks
-                $error = false;
-                $errors = array();
-                if ($email != $email_ver)
-                {
-                    $error = true;
-                    $errors[] = "Email addresses do not match";
-                }
-                
-                if ($password !== $password_ver)
-                {
-                    $error = true;
-                    $errors[] = "Passwords do not match";
-                }
-                if ($user->get_user('username', $username))
-                {
-                    $error = true;
-                    $errors[] = "Username is already taken";
-                }
-                if ($error == true)
-                {
-                    $template_file = "user/register.html";
-                    $template->assign_block_vars('errors', $errors);
-                }
-                else
-                {
-                    $usr_ary = array(
-                        'username' => $username,
-                        'email' => $email,
-                        'password' => $password,
-                        'user_level' => 1,
-                        'date_registered' => time(),
-                        'user_founder' => 0
-                    );
-                    $newuser = $user->create_user($user_array);
-                    $template_file = "user/message.html";
-                    $template->assign_var('Message', 'You have registered successfully. You may now login.');
-                }
+                $template_file = "user/message.html";
+                $template->assign_var('MESSAGE', 'This website is currently not accepting registrations.');
             }
             else
             {
-                $template_file = "user/register.html";
+                if (isset($_POST['submit']))
+                {
+                    $email = request_var('email', null);
+                    $email_ver = request_var('email-verify', null);
+                    $password = request_var('password', null);
+                    $pass_ver = request_var('pass-verify', null);
+                    $username = request_var('username');
+                    //Verification Checks
+                    $error = false;
+                    $errors = array();
+                    if ($email != $email_ver)
+                    {
+                        $error = true;
+                        $errors[] = "Email addresses do not match";
+                    }
+
+                    if ($password !== $password_ver)
+                    {
+                        $error = true;
+                        $errors[] = "Passwords do not match";
+                    }
+                    if ($user->get_user('username', $username))
+                    {
+                        $error = true;
+                        $errors[] = "Username is already taken";
+                    }
+                    if ($error == true)
+                    {
+                        $template_file = "user/register.html";
+                        $template->assign_block_vars('errors', $errors);
+                    }
+                    else
+                    {
+                        $usr_ary = array(
+                            'username' => $username,
+                            'email' => $email,
+                            'password' => $password,
+                            'user_level' => 1,
+                            'date_registered' => time(),
+                            'user_founder' => 0
+                        );
+                        $newuser = $user->create_user($usr_ary);
+                        $template_file = "user/message.html";
+                        $template->assign_var('Message', 'You have registered successfully. You may now login.');
+                    }
+                }
+                else
+                {
+                    $template_file = "user/register.html";
+                }
             }
             break;
         case 'verify':
             break;
     }
+}
+else
+{
+    //Part for viewing profiles.
 }
 
