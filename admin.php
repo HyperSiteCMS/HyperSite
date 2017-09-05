@@ -411,6 +411,7 @@ else
                         }
                     };
                     $user_array['password'] = $post['password'];
+                    $user_array['user_status'] = 1;
                     $newuser = $user->create_user($user_array);
                     $template->assign_var('MESSAGE', 1);
                     if (!$db->query($sql))
@@ -594,11 +595,10 @@ else
                         'SITE_INTRO' => html_entity_decode($array['site_intro']),
                         'TITLE' => $array['site_title'],
                         'DESC' => $array['site_desc'],
-                        'ALLOW_USERS' => $array['allow_users'],
+                        'ALLOW_USERS_LOGIN' => $array['allow_users_login'],
+                        'ALLOW_USERS_REG' => $array['allow_users_reg'],
                         'THEME' => $array['site_theme'],
                         'THEME_SELECT' => generate_theme_select($array['site_theme']),
-                        'TINY_MCE_API' => $array['tiny_mce_api'],
-                        'USE_TINYMCE' => $array['use_tiny_mce']
                     ));
                     for ($x = 8; isset($all_settings[$x]); $x++)
                     {

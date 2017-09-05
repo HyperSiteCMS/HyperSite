@@ -91,11 +91,12 @@ switch ($stage)
         $admin_password = $db->clean(request_var('admin_pass', null));
         $admin_email = $db->clean(request_var('admin_email', null));
         $site_title = $db->clean(request_var('site_title', 'HyperSite'));
+        $site_email = $db->clean(request_var('site_email', 'some@email.com'));
         $site_desc = $db->clean(request_var('site_desc', 'A CMS for Everyone'));
         $intro = $db->clean(htmlentities(request_var('site_intro', 'Welcome to HyperSite')));
         $query = "INSERT INTO " . SETTINGS_TABLE . "(`setting_name`,`setting_value`) VALUES ";
-        $query .= "('site_title', '{$site_title}'), ('site_desc', '{$site_desc}'), ";
-        $query .= "('site_intro', '{$intro}'), ('site_theme', 'elegant black'), ('allow_users', '0'), ";
+        $query .= "('site_title', '{$site_title}'), ('site_email', '{$site_email}'), ('site_desc', '{$site_desc}'), ";
+        $query .= "('site_intro', '{$intro}'), ('site_theme', 'elegant black'), ('allow_users_login', '0'), ('allow_users_reg', '0') ";
         $query .= ");";
         $result = $db->query($query);
         if (!$result)
@@ -113,7 +114,8 @@ switch ($stage)
             'user_email' => $admin_email,
             'user_level' => 3,
             'date_registered' => time(),
-            'user_founder' => 1
+            'user_founder' => 1,
+            'user_status' => 1
         );
         $newuser = $user->create_user($user_array);
         if (!$newuser)

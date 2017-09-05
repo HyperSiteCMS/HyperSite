@@ -27,6 +27,7 @@ require("{$root_path}includes/classes/class.dbal.{$phpex}");
 require("{$root_path}includes/classes/class.template.{$phpex}");
 require("{$root_path}includes/classes/class.user.{$phpex}");
 require("{$root_path}includes/classes/class.modules.{$phpex}");
+require("{$root_path}includes/classes/class.PHPMailer.{$phpex}");
 
 //Open database connection
 $db = new dbal($config->mysql['server'], $config->mysql['user'], $config->mysql['pass'], $config->mysql['db'], $config->mysql['port']);
@@ -71,6 +72,7 @@ $mode = (($mode == 'index') ? 'home' : $mode);
 $act = $db->clean(request_var('act', null));
 $i = $db->clean(request_var('i', null));
 
+$mail = new PHPMailer;
 //Load some sitewide variables into the template :)
 $template->assign_vars(array(
    'SITE_TITLE' => $config->config['site_title'],
