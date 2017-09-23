@@ -1,0 +1,79 @@
+###################################################
+# Turn the RewriteEngine on.                      #
+###################################################
+
+RewriteEngine on
+
+###################################################
+# Add a leading www to domain if one is missing.  #
+###################################################
+# If this rule is used, the rewriting stops here  #
+# and then restarts from the beginning with the   #
+# new URL                                         #
+###################################################
+
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+###################################################
+# Do not process images or CSS files further      #
+###################################################
+# No more processing occurs if this rule is       #
+# successful                                      #
+###################################################
+
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule \.(css|jpe?g|gif|png)$ - [L]
+
+###################################################
+# Add a trailing slash if needed                  #
+###################################################
+# If this rule is used, the rewriting stops here  #
+# and then restarts from the beginning with the   #
+# new URL                                         #
+###################################################
+RewriteCond %{REQUEST_URI} ^/[^\.]+[^/]$
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1/ [R=301,L]
+
+###################################################
+# Rewrite web pages to one master page            #
+###################################################
+# /somepage/            => master.php             #
+#                            ?page=somepage       #
+# /somesection/somepage => master.php             #
+#                            ?section=somesection #
+#                            &page=somepage       #
+# /somesection/somesub/somepage/                  #
+#                       => master.php             #
+#                            ?section=somesection #
+#                            &subsection=somesub  #
+#                            &page=somepage       #
+###################################################
+# Variables are accessed in PHP using             #
+# $_GET['section'], $_GET['subsection'] and       #
+# $_GET['page']                                   #
+###################################################
+# No more processing occurs if any of these rules #
+# are successful                                  #
+###################################################
+
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^([^/\.]+)/?$ /index.php?mode=$1 [L]
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^([^/\.]+)/([^/\.]+)/?$ /index.php?mode=$1&act=$2 [L]
+RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/.+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+RewriteRule ^([^/\.]+)/([^/\.]+)/([^/\.]+)/?$ /index.php?mode=$1&act=$2&i=$3 [L]
