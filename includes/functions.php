@@ -5,8 +5,8 @@
  * @file            functions.php
  * @file_desc       Various functions for use throughout the site.
  * @author          Ryan Morrison
- * @website         http://www.hypersite.info
- * @copyright       (c) 2017 HyperSite CMS
+ * @website         -
+ * @copyright       (c) 2019 HyperSite CMS
  * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 

@@ -5,8 +5,8 @@
  * @file            common.php
  * @file_desc       Loads classes and default values used throughout the site.
  * @author          Ryan Morrison
- * @website         http://www.hypersite.info
- * @copyright       (c) 2017 HyperSite CMS
+ * @website         -
+ * @copyright       (c) 2019 HyperSite CMS
  * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 
@@ -29,7 +29,7 @@ require("{$root_path}includes/classes/class.dbal.{$phpex}");
 require("{$root_path}includes/classes/class.template.{$phpex}");
 require("{$root_path}includes/classes/class.user.{$phpex}");
 require("{$root_path}includes/classes/class.modules.{$phpex}");
-//require("{$root_path}includes/classes/class.PHPMailer.{$phpex}");
+
 //Open database connection
 $db = new dbal($config->mysql['server'], $config->mysql['user'], $config->mysql['pass'], $config->mysql['db'], $config->mysql['port']);
 //Load settings from Database

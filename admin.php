@@ -5,8 +5,8 @@
  * @file            admin.php
  * @file_desc       Handles the administrative side for website owners.
  * @author          Ryan Morrison
- * @website         http://www.hypersite.info
- * @copyright       (c) 2017 HyperSite CMS
+ * @website         -
+ * @copyright       (c) 2019 HyperSite CMS
  * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
  */
 

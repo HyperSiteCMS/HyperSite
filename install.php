@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * @package         HyperSite CMS
+ * @file            install.php
+ * @file_desc       Install the CMS
+ * @author          Ryan Morrison
+ * @website         -
+ * @copyright       (c) 2019 HyperSite CMS
+ * @license         http://opensource.org/licenses/gpl-license.php GNU Public License
+ */
 error_reporting(E_ALL);
 define('IN_HSCMS', true);
 define('IN_INSTALL', true);
@@ -13,32 +23,29 @@ require("{$root_path}includes/classes/class.user.{$phpex}");
 require("{$root_path}includes/classes/class.modules.{$phpex}");
 require("{$root_path}includes/classes/class.config.{$phpex}");
 
-$template = new template($root_path . 'styles/elegant_black/template/','default');
+$template = new template($root_path . 'styles/elegant_black/template/', 'default');
 
 $stage = request_var('stage', 0);
 
 $template->assign_vars(array(
-   'SITE_TITLE' => 'HyperSite Install',
-   'SITE_DESCRIPTION' => 'Installing HyperSite CMS',
-   'CREDIT_LINE' => "Powered by <a href=\"http://www.hypersite.info\">HyperSite v1.0 &copy;</a>",
-   'ALLOW_USER_LOGIN' => 0,
-   'SITE_THEME' => 'elegant_black',
-   'SERVER_NAME' => $_SERVER['SERVER_NAME'],
-   'USER_LOGGED_IN' => 0,
-   'USER_IS_ADMIN' => 0
+    'SITE_TITLE' => 'HyperSite Install',
+    'SITE_DESCRIPTION' => 'Installing HyperSite CMS',
+    'CREDIT_LINE' => "Powered by <a href=\"http://www.hypersite.info\">HyperSite v1.0 &copy;</a>",
+    'ALLOW_USER_LOGIN' => 0,
+    'SITE_THEME' => 'elegant_black',
+    'SERVER_NAME' => $_SERVER['SERVER_NAME'],
+    'USER_LOGGED_IN' => 0,
+    'USER_IS_ADMIN' => 0
 ));
-if ($stage > 1)
-{
+if ($stage > 1) {
     $config = new config();
     require "{$root_path}includes/constants.php";
     $db = new dbal($config->mysql['server'], $config->mysql['user'], $config->mysql['pass'], $config->mysql['db'], $config->mysql['port']);
 }
-if ($stage > 3)
-{
+if ($stage > 3) {
     $user = new user();
 }
-switch ($stage)
-{
+switch ($stage) {
     default:
     case 0:
         //Display form to gather MySQL information.
@@ -48,8 +55,7 @@ switch ($stage)
         //Test Connection
         $conf = json_decode(file_get_contents("{$root_path}includes/conf.json"), true);
         $db = new dbal($conf['server'], $conf['user'], $conf['pass'], $conf['db'], $conf['port']);
-        if ($db->error == true)
-        {
+        if ($db->error == true) {
             $template_file = "install/0.html";
             $template->assign_vars(array(
                 'ERROR' => 1,
@@ -62,19 +68,15 @@ switch ($stage)
     case 2:
         $sql_file = "{$root_path}includes/sql/hypersite.sql";
         $queries = explode(';', file_get_contents($sql_file));
-        unset($queries[count($queries)-1]);
-        foreach ($queries as $query)
-        {
+        unset($queries[count($queries) - 1]);
+        foreach ($queries as $query) {
             $query = str_replace('hs_', $config->mysql['table_prefix'], $query);
             $result = $db->query($query);
-            if ($result)
-            {
+            if ($result) {
                 $template->assign_block_vars('log', array(
                     "TEXT" => 'Query Executed: ' . $query . '<br />'
                 ));
-            }
-            else
-            {
+            } else {
                 $template->assign_block_vars('log', array(
                     'TEXT' => 'Query Failed: ' . $query . '<br />'
                 ));
@@ -99,17 +101,16 @@ switch ($stage)
         $query .= "('site_intro', '{$intro}'), ('site_theme', 'elegant black'), ('allow_users_login', '0'), ('allow_users_reg', '0') ";
         $query .= ";";
         $result = $db->query($query);
-        if (!$result)
-        {
+        if (!$result) {
             $template->assign_vars(array(
-               'ERROR' => 1,
-                'MESSAGE' => 'Failed to write to database: ' . $db->error_msg . '<br/>'. $query
+                'ERROR' => 1,
+                'MESSAGE' => 'Failed to write to database: ' . $db->error_msg . '<br/>' . $query
             ));
             $template_file = "install/3.html";
             break;
         }
         $user_array = array(
-           'username' => $admin_username,
+            'username' => $admin_username,
             'password' => $admin_password,
             'user_email' => $admin_email,
             'user_level' => 3,
@@ -118,15 +119,13 @@ switch ($stage)
             'user_status' => 1
         );
         $newuser = $user->create_user($user_array);
-        if (!$newuser)
-        {
+        if (!$newuser) {
             $template->assign_vars(array(
-               'ERROR' => 1,
+                'ERROR' => 1,
                 'MESSAGE' => 'Failed to write user to database: ' . $db->error_msg
             ));
             $template_file = "install/3.html";
             break;
-        
         }
         $template_file = "install/4.html";
         break;
@@ -152,18 +151,14 @@ switch ($stage)
                 'level_name' => 'Administrator'
             )
         );
-        foreach ($array as $level)
-        {
+        foreach ($array as $level) {
             $query = $db->build_query('insert', LEVELS_TABLE, $level);
             $result = $db->query($query);
-            if ($result)
-            {
+            if ($result) {
                 $template->assign_block_vars('log', array(
                     "TEXT" => 'Level Added: ' . $level['level_name'] . '<br />'
                 ));
-            }
-            else
-            {
+            } else {
                 $template->assign_block_vars('log', array(
                     'TEXT' => 'Level not added: ' . $level['name'] . '<br />'
                 ));
@@ -184,34 +179,28 @@ switch ($stage)
         );
         $hquery = $db->build_query('insert', PAGES_TABLE, $home_array);
         $home = $db->query($hquery);
-        if (!$home)
-        {
+        if (!$home) {
             $template->assign_block_vars('log', array(
-                    'TEXT' => 'Failed to add Home Page: ' . $db->error_msg . ' <br/>' . $hquery . '<br/>'
-                ));
-        }
-        else 
-        {
+                'TEXT' => 'Failed to add Home Page: ' . $db->error_msg . ' <br/>' . $hquery . '<br/>'
+            ));
+        } else {
             $template->assign_block_vars('log', array(
-                    'TEXT' => 'Added Home page<br/>'
-                ));
+                'TEXT' => 'Added Home page<br/>'
+            ));
         }
         $aquery = $db->build_query('insert', PAGES_TABLE, $about_array);
         $about = $db->query($aquery);
-        if (!$about)
-        {
+        if (!$about) {
             $template->assign_block_vars('log', array(
-                    'TEXT' => 'Failed to add About Page: ' . $db->error_msg . ' <br />' . $aquery . '<br/>'
-                ));
-        }
-        else 
-        {
+                'TEXT' => 'Failed to add About Page: ' . $db->error_msg . ' <br />' . $aquery . '<br/>'
+            ));
+        } else {
             $template->assign_block_vars('log', array(
-                    'TEXT' => 'Added About page<br/>'
-                ));
+                'TEXT' => 'Added About page<br/>'
+            ));
         }
         $template_file = "install/5.html";
-                break;
+        break;
 }
 $template->set_filenames(array(
     'body' => $template_file
