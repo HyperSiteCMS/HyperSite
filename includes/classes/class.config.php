@@ -2,7 +2,6 @@
 class config
 {
     public $mysql = array();
-    public $table_prefix = '';
     public $template_dir = 'styles';
     public $config = array();
     

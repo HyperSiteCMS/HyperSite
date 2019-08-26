@@ -6,8 +6,8 @@
             <table width="100%">
                 <tr><td>Site Title</td><td><input type="text" name="site_title" value="{TITLE}" /></td></tr>
                 <tr><td>Site Description</td><td><input type="text" name="site_desc" value="{DESC}" /></td></tr>
-                <tr><td>Allow Users to Login</td><td><input type="radio" name="allow_users_login" value="0" <!-- IF ALLOW_USERS_LOGIN EQUALS 0 -->checked="checked"<!-- ENDIF -->/>No <input type="radio" name="allow_users_login" value="1" <!-- IF ALLOW_USERS_LOGIN EQUALS 1 -->checked="checked"<!-- ENDIF -->/>Yes</td></tr>
-                <tr><td>Allow Users to Login</td><td><input type="radio" name="allow_users_reg" value="0" <!-- IF ALLOW_USERS_REG EQUALS 0 -->checked="checked"<!-- ENDIF -->/>No <input type="radio" name="allow_users_reg" value="1" <!-- IF ALLOW_USERS_REG EQUALS 1 -->checked="checked"<!-- ENDIF -->/>Yes</td></tr>
+                <tr><td>Allow Users to Login</td><td><input type="radio" name="allow_users_login" value="0" <!-- IF ALLOW_USER_LOGIN == 0 -->checked="checked"<!-- ENDIF -->/>No <input type="radio" name="allow_users_login" value="1" <!-- IF ALLOW_USER_LOGIN == 1 -->checked="checked"<!-- ENDIF -->/>Yes</td></tr>
+                <tr><td>Allow Users to Login</td><td><input type="radio" name="allow_users_reg" value="0" <!-- IF ALLOW_USER_REG == 0 -->checked="checked"<!-- ENDIF -->/>No <input type="radio" name="allow_users_reg" value="1" <!-- IF ALLOW_USER_REG == 1 -->checked="checked"<!-- ENDIF -->/>Yes</td></tr>
             </table></fieldset>
         <fieldset><label>Display Settings</label>
             <table width="100%">
@@ -22,6 +22,7 @@
             <td><input type="text" name="{settings.NAME}" value="{settings.VALUE}"/></td>
         </tr>
         <!-- END settings -->
+        </fieldset>
         <tr>
             <td colspan="2" align="center">
                 <input type="submit" name="save" value="Save" class="mainaction"/>

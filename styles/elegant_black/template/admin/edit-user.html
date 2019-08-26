@@ -9,8 +9,8 @@
         <b>New Password:</b> <input type="password" name="password" value=""/><br/>
         <input type="hidden" name="cur_pass" value="{PASSWORD}" />
         <b>Email:</b> <input type="text" name="user_email" value="{USER_EMAIL}"/><br/>
-        <b>Level:</b> <select name="user_level"><option value="1" <!-- IF USER_LEVEL EQUALS 1 -->selected="selected"<!-- ENDIF -->>User</option><option value="2" <!-- IF USER_LEVEL EQUALS 2 -->selected="selected"<!-- ENDIF -->>Moderator</option><option value="3" <!-- IF USER_LEVEL EQUALS 3 -->selected="selected"<!-- ENDIF -->>Administrator</option></select><br/>
-        <b>Founder:</b> <select name="user_founder"><option value="0" <!-- IF USER_FOUNDER EQUALS 0 -->selected="true"<!-- ENDIF -->>No</option><option value="1" <!-- IF USER_FOUNDER 1 -->selected="true"<!-- ENDIF -->>Yes</option></select><br/>
+        <b>Level:</b> <select name="user_level"><option value="1" <!-- IF USER_LEVEL == 1 -->selected="selected"<!-- ENDIF -->>User</option><option value="2" <!-- IF USER_LEVEL == 2 -->selected="selected"<!-- ENDIF -->>Moderator</option><option value="3" <!-- IF USER_LEVEL == 3 -->selected="selected"<!-- ENDIF -->>Administrator</option></select><br/>
+        <b>Founder:</b> <select name="user_founder"><option value="0" <!-- IF USER_FOUNDER == 0 -->selected="true"<!-- ENDIF -->>No</option><option value="1" <!-- IF USER_FOUNDER == 1 -->selected="true"<!-- ENDIF -->>Yes</option></select><br/>
         <input type="submit" class="mainaction" value="Save" name="save"/>
     </form>
     </fieldset>

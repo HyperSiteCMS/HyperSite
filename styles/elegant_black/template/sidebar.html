@@ -2,10 +2,17 @@
 <div class="block">
 <h2>Sub-Pages</h2>
 <ul>
-    <!-- BEGIN subpages -->
-    <li><a href="/{subpages.LINK}/">{subpages.TITLE}</a></li>
-    <!-- END subpages -->
+    {SUB_PAGES}
 </ul> 
+</div>
+<!-- ENDIF -->
+<!-- IF HAS_PARENT_SUBS -->
+<div class="box">
+    <h3>Parent Sub-pages</h3>
+    This is a list of sub-pages on the same level as this page under the same parent.
+    <ul>
+        {PARENT_SUBS}
+    </ul>
 </div>
 <!-- ENDIF -->
 <!-- IF USER_IS_ADMIN && IN_ACP -->

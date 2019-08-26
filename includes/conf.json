@@ -1,7 +1,7 @@
 {
     "server": "localhost",
-    "user": "root",
-    "pass": "",
+    "user": "hypersite",
+    "pass": "password",
     "db": "hypersite",
     "port": "3306",
     "table_prefix": "hs_"

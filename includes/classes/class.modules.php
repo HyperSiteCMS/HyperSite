@@ -64,7 +64,7 @@ class modules {
         else
         {
             $mod_info = json_decode(file_get_contents("{$root_path}modules/{$mod_name}/{$mod_name}.json"),true);
-            $this->do_actions('install', $mod_name, $mod_info['mod_install_file']);
+            $this->do_actions($mod_name, $mod_info['mod_install_file'], 'install');
             //Update Database now to show module installed
             $query = $db->build_query('insert', MODULE_TABLE, $mod_info);
             $result = $db->query($query);
@@ -83,14 +83,14 @@ class modules {
         {
             $where = array('mod_name' => $mod_name);
             $mod_name = strtolower(str_replace(' ','_',$mod_name));
-            $this->do_actions('uninstall', $mod_name, $row['mod_install_file']);
+            $this->do_actions($mod_name, $row['mod_install_file'], 'uninstall');
             //Remove module from database
             $result = $db->query($db->build_query('delete', MODULE_TABLE, false, $where));
             return $result;
         }
         return false;
     }
-    function do_actions($action = 'install', $mod_name, $filename)
+    function do_actions($mod_name, $filename, $action = 'install')
     {
         global $db, $root_path, $config;
         include "{$root_path}modules/{$mod_name}/{$filename}";
@@ -111,6 +111,14 @@ class modules {
                     $table_name = $config->mysql['table_prefix'] . $install_actions[$x]['insert']['table'];
                     $query = $db->build_query('insert', $table_name, $assoc_array) or die("Unable to create query?");
                     $result = $db->query($query) or die('Unable to Insert data into database for Module: ' . $query);
+                }
+            }
+            if (isset($secondary_actions))
+            {
+                foreach ($secondary_actions as $action) {
+                    $table_name = $config->mysql['table_prefix'] . $action['table'];
+                    $query = "{$action['do']} `{$table_name}` {$action['what']}";
+                    $result = $db->query($query) or die("Unable to complete secondary install actions<br/>{$query}");
                 }
             }
         }
