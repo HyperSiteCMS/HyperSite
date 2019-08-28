@@ -105,8 +105,8 @@ if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_adm
                         } else {
                             $template->assign_var('MESSAGE', 'Success! Page information updated.');
                         }
-                        $template_file = "admin/message.html";
                     }
+                    $template_file = "admin/message.html";
                 }
                 break;
             case 'deletepage':
