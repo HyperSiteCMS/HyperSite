@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS `hs_pages` (
   `page_text` text NOT NULL,
   `page_parent` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`page_id`),
-  UNIQUE KEY `page_identifier` (`page_identifier`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 CREATE TABLE IF NOT EXISTS `hs_sessions` (
   `sess_id` int(11) NOT NULL AUTO_INCREMENT,

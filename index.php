@@ -44,73 +44,80 @@ if (file_exists('install.' . $phpex)) {
         } else {
             $template_file = "viewpage.html";
         }
+        //Load the first level page. Ensure that it is a root page.
+        $ModePage = $db->fetchrow($db->query("SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$mode}' AND page_parent=0"));
         if (isset($act) && $act != null) {
+            //Load in first sub-page ensuring it's parent is the one used in $mode
+            $ActPage = $db->fetchrow($db->query("SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$act}' AND page_parent={$ModePage['page_id']}"));
             if (isset($i) && $i != null) {
+                //Load second level sub-page and ensure parent is from $act
+                $IPage = $db->fetchrow($db->query("SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$i}' AND page_parent={$ActPage['page_id']}"));
                 if (isset($p) && $p != null) {
-                    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$p}'";
-                    $page = $db->fetchrow($db->query($query));
-                    if (isset($page['page_title'])) {
+                    //Now load the very last page ensuring parent is $i
+                    $PPage = $db->fetchrow($db->query("SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$p}' AND page_parent={$IPage['page_id']}"));
+                    if (isset($PPage['page_title'])) {
                         $template->assign_vars(array(
-                            'PAGE_TITLE' => $page['page_title'],
-                            'PAGE_TEXT' => html_entity_decode($page['page_text']) . "<br/><br/><br/>&laquo; <a href='./{$mode}/{$act}/{$i}/'>Return to Parent</a>"
+                            'PAGE_TITLE' => $PPage['page_title'],
+                            'PAGE_TEXT' => html_entity_decode($PPage['page_text']) . "<br/><br/><br/>&laquo; <a href='./{$mode}/{$act}/{$i}/'>Return to Parent</a>"
                         ));
+                        $page_parent = $PPage['page_parent'];
+                        $this_page = $PPage['page_id'];
                     } else {
                         $template_file = "user/message.html";
                         $template->assign_vars(array(
-                            'PAGE_TITLE' => $page['page_title'],
+                            'PAGE_TITLE' => '404 Error',
                             'MESSAGE' => 'The page you are trying to find does not exist, or the module is not loaded.'
                         ));
                     }
                 } else {
-                    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$i}'";
-                    $page = $db->fetchrow($db->query($query));
-                    if (isset($page['page_title'])) {
+                    if (isset($IPage['page_title'])) {
                         $template->assign_vars(array(
-                            'PAGE_TITLE' => $page['page_title'],
-                            'PAGE_TEXT' => html_entity_decode($page['page_text']) . "<br/><br/><br/>&laquo; <a href='./{$mode}/{$act}/'>Return to Parent</a>"
+                            'PAGE_TITLE' => $IPage['page_title'],
+                            'PAGE_TEXT' => html_entity_decode($IPage['page_text']) . "<br/><br/><br/>&laquo; <a href='./{$mode}/{$act}/'>Return to Parent</a>"
                         ));
+                        $page_parent = $IPage['page_parent'];
+                        $this_page = $IPage['page_id'];
                     } else {
                         $template_file = "user/message.html";
                         $template->assign_vars(array(
-                            'PAGE_TITLE' => $page['page_title'],
+                            'PAGE_TITLE' => '404 Error',
                             'MESSAGE' => 'The page you are trying to find does not exist, or the module is not loaded.'
                         ));
                     }
                 }
             } else {
-                $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$act}'";
-                $page = $db->fetchrow($db->query($query));
-                if (isset($page['page_title'])) {
+                if (isset($ActPage['page_title'])) {
                     $template->assign_vars(array(
-                        'PAGE_TITLE' => $page['page_title'],
-                        'PAGE_TEXT' => html_entity_decode($page['page_text']) . "<br/><br/><br/>&laquo; <a href='./{$mode}/'>Return to Parent</a>"
+                        'PAGE_TITLE' => $ActPage['page_title'],
+                        'PAGE_TEXT' => html_entity_decode($ActPage['page_text']) . "<br/><br/><br/>&laquo; <a href='./{$mode}/'>Return to Parent</a>"
                     ));
+                    $page_parent = $ActPage['page_parent'];
+                    $this_page = $ActPage['page_id'];
                 } else {
                     $template_file = "user/message.html";
                     $template->assign_vars(array(
-                        'PAGE_TITLE' => $page['page_title'],
+                        'PAGE_TITLE' => '404 Error',
                         'MESSAGE' => 'The page you are trying to find does not exist, or the module is not loaded.'
                     ));
                 }
             }
         } else {
-            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$mode}'";
-            $result = $db->query($query);
-            $page = $db->fetchrow($result);
-            if (!isset($page['page_title'])) {
+            if (!isset($ModePage['page_title'])) {
                 $template_file = "user/message.html";
                 $template->assign_vars(array(
-                    'PAGE_TITLE' => $page['page_title'],
+                    'PAGE_TITLE' => '404 Error',
                     'MESSAGE' => 'The page you are trying to find does not exist, or the module is not loaded.'
                 ));
             } else {
                 $template->assign_vars(array(
-                    'PAGE_TITLE' => $page['page_title'],
-                    'PAGE_TEXT' => html_entity_decode($page['page_text'])
+                    'PAGE_TITLE' => $ModePage['page_title'],
+                    'PAGE_TEXT' => html_entity_decode($ModePage['page_text'])
                 ));
+                $page_parent = $ModePage['page_parent'];
+                $this_page = $ModePage['page_id'];
             }
         }
-        $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_id']}";
+        $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$this_page}";
         $result = $db->query($query);
         $subpages = $db->fetchall($result);
         if (count($subpages) > 0) {
@@ -129,8 +136,8 @@ if (file_exists('install.' . $phpex)) {
             $template->assign_var('SUB_PAGES', $subs);
         }
         //Now see if the parent page has subs
-        if ($page['page_parent'] > 0) {
-            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page['page_parent']}";
+        if ($page_parent > 0) {
+            $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_parent={$page_parent}";
             $parent_subs = $db->fetchall($db->query($query));
             if (count($parent_subs) > 0) {
                 $parents = '';
