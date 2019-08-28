@@ -55,12 +55,18 @@ if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_adm
                         'page_parent' => $db->clean(request_var('parent', 0)),
                         'page_text' => $db->clean(htmlentities(request_var('page_text', '')))
                     );
-                    $query = $db->build_query('insert', PAGES_TABLE, $page_info);
-                    $result = $db->query($query);
-                    if (!$result) {
-                        $template->assign_var('MESSAGE', 'Error: Page failed to save');
+                    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$page_info['page_identifier']}' AND page_parent={$page_info['page_parent']}";
+                    $existingOrNot = $db->fetchrow($db->query($query));
+                    if (isset($existingOrNot['page_id'])) {
+                        $template->assign_var('MESSAGE', 'Error: Page with that identifier exists under this parent.');
                     } else {
-                        $template->assign_var('MESSAGE', 'Success! Page saved.');
+                        $query = $db->build_query('insert', PAGES_TABLE, $page_info);
+                        $result = $db->query($query);
+                        if (!$result) {
+                            $template->assign_var('MESSAGE', 'Error: Page failed to save');
+                        } else {
+                            $template->assign_var('MESSAGE', 'Success! Page saved.');
+                        }
                     }
                 }
                 break;
@@ -86,15 +92,21 @@ if ($user->user_info['logged_in'] < 1 || $user->user_info['permissions']['is_adm
                         'page_parent' => $db->clean(request_var('parent', 0)),
                         'page_text' => $db->clean(htmlentities(request_var('page_text', '')))
                     );
-                    $where = array('page_id' => $db->clean($i));
-                    $query = $db->build_query('update', PAGES_TABLE, $page_info, $where);
-                    $result = $db->query($query);
-                    if (!$result) {
-                        $template->assign_var('MESSAGE', 'Error: Page failed to save');
+                    $query = "SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$page_info['page_identifier']}' AND page_parent={$page_info['page_parent']} AND page_id!={$i}";
+                    $existingOrNot = $db->fetchrow($db->query($query));
+                    if (isset($existingOrNot['page_id'])) {
+                        $template->assign_var('MESSAGE', 'Error: You have modified the identifier to one that already exists under this parent');
                     } else {
-                        $template->assign_var('MESSAGE', 'Success! Page information updated.');
+                        $where = array('page_id' => $db->clean($i));
+                        $query = $db->build_query('update', PAGES_TABLE, $page_info, $where);
+                        $result = $db->query($query);
+                        if (!$result) {
+                            $template->assign_var('MESSAGE', 'Error: Page failed to save');
+                        } else {
+                            $template->assign_var('MESSAGE', 'Success! Page information updated.');
+                        }
+                        $template_file = "admin/message.html";
                     }
-                    $template_file = "admin/message.html";
                 }
                 break;
             case 'deletepage':
