@@ -53,6 +53,7 @@ if (file_exists('install.' . $phpex)) {
                 //Load second level sub-page and ensure parent is from $act
                 $IPage = $db->fetchrow($db->query("SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$i}' AND page_parent={$ActPage['page_id']}"));
                 if (isset($p) && $p != null) {
+                    $this_identifier = $p;
                     //Now load the very last page ensuring parent is $i
                     $PPage = $db->fetchrow($db->query("SELECT * FROM " . PAGES_TABLE . " WHERE page_identifier='{$p}' AND page_parent={$IPage['page_id']}"));
                     if (isset($PPage['page_title'])) {
@@ -70,6 +71,7 @@ if (file_exists('install.' . $phpex)) {
                         ));
                     }
                 } else {
+                    $this_identifier = $i;
                     if (isset($IPage['page_title'])) {
                         $template->assign_vars(array(
                             'PAGE_TITLE' => $IPage['page_title'],
@@ -86,6 +88,7 @@ if (file_exists('install.' . $phpex)) {
                     }
                 }
             } else {
+                $this_identifier = $act;
                 if (isset($ActPage['page_title'])) {
                     $template->assign_vars(array(
                         'PAGE_TITLE' => $ActPage['page_title'],
@@ -102,6 +105,7 @@ if (file_exists('install.' . $phpex)) {
                 }
             }
         } else {
+            $this_identifier = $mode;
             if (!isset($ModePage['page_title'])) {
                 $template_file = "user/message.html";
                 $template->assign_vars(array(
@@ -143,7 +147,7 @@ if (file_exists('install.' . $phpex)) {
                 $parents = '';
                 foreach ($parent_subs as $parent) {
                     $parents .= "<li><a href=\"./{$mode}/";
-                    if (isset($act) && $act != null && $act != $parent['page_identifier']) {
+                    if (isset($act) && $act != null && $act != $parent['page_identifier'] && $act != $this_identifier) {
                         $parents .= "{$act}/";
                     }
                     if (isset($i) && $i != null && $i != $parent['page_identifier']) {
