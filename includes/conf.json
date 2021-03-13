@@ -1,8 +1,0 @@
-{
-    "server": "localhost",
-    "user": "hypersite",
-    "pass": "password",
-    "db": "hypersite",
-    "port": "3306",
-    "table_prefix": "hs_"
-}
